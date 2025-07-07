@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cybersecurity Portfolio</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/images/logo.ico" type="image/x-icon">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Icons (Font Awesome CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* All your CSS styles here */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Source Code Pro', monospace;
+      color: white;
+      background-color: #0d1117;
+      overflow-x: hidden;
+    }
+
+    /* Global Background Effect */
+    .bg-effect {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+      background-image: radial-gradient(circle at center, rgba(0,255,0,0.05), transparent 60%), repeating-radial-gradient(circle at center, rgba(0,255,0,0.03), rgba(0,255,0,0.03) 10px, transparent 10px, transparent 20px);
+      animation: moveMatrix 60s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes moveMatrix {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 100vh; }
+    }
+
+    /* Terminal Loader */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      background: black;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: opacity 0.5s ease; /* Loader transition */
+    }
+
+    .terminal-loader p,
+    .terminal-loader span {
+      margin: 0.5rem;
+    }
+
+    .progress-line {
+      width: 256px;
+      height: 2px;
+      background: #374151;
+      margin: 1rem 0;
+    }
+
+    .progress {
+      height: 2px;
+      background: #34d399;
+      width: 0%;
+    }
+
+    #accessGranted {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #accessGranted.loaded {
+      opacity: 1;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,0.3);
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      transition: transform 0.3s ease-out; /* Add transition for smooth hide/show */
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+
+    .menu-button {
+      display: none;
+      font-size: 1.5rem;
+      background: none;
+      color: #34d399;
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #34d399;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        background: #1f2937cc;
+        padding: 1rem;
+        backdrop-filter: blur(5px);
+        z-index: 999;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .menu-button {
+        display: block;
+      }
+    }
+
+    /* Back to Top Button */
+    #backToTop {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      width: 40px;
+      height: 40px;
+      background: rgba(52,211,153,0.3);
+      border: none;
+      border-radius: 50%;
+      color: #34d399;
+      font-size: 1.25rem;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    #backToTop.show {
+      display: flex;
+    }
+
+    /* Sections */
+    .section {
+      padding: 4rem 2rem;
+      background-color: #111b2e;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      background: transparent;
+      position: relative;
+      z-index: 1;
+    }
+
+    .glow-title {
+      font-size: 2.5rem;
+      color: white;
+      opacity: 0.6;
+      animation: dimGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes dimGlow {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .typing {
+      font-size: 2rem;
+      color: #34d399;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .name {
+      font-size: 1.25rem; /* Reverted size */
+      color: #86efac;
+      margin: 1rem 0;
+      /* Removed font-weight: bold; and text-shadow */
+    }
+
+    .centered-button {
+      text-align: center;
+      margin-top: 2rem;
+      display: flex; /* Use flexbox for button alignment */
+      gap: 1rem; /* Space between buttons */
+      justify-content: center; /* Center buttons horizontally */
+    }
+
+    .btn-contact, .btn-cv { /* Added .btn-cv style */
+      background: #34d399;
+      color: black;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-contact:hover, .btn-cv:hover { /* Added .btn-cv hover style */
+      transform: scale(1.05);
+    }
+
+    /* About Me */
+    .about-grid {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .about-text {
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .about-text {
+        text-align: left;
+      }
+    }
+
+    .about-pic {
+      background: #1f2937;
+      width: 100%; /* Changed to 100% to scale with parent */
+      /* Removed max-width to allow fluid scaling */
+      aspect-ratio: 1 / 1;
+      border-radius: 0.5rem;
+      background-image: url("assets/images/profile.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Skills */
+    .skills-list ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .skills-list li {
+      margin-bottom: 1.5rem;
+    }
+
+    .skills-bar-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .skill-name {
+      font-size: 1.1rem;
+      color: white;
+      display: block;
+      margin-bottom: 0.25rem;
+      transition: color 0.3s ease;
+    }
+
+    .skill-name:hover {
+      color: #34d399;
+      text-shadow: 0 0 5px #34d399aa;
+    }
+
+    .skills-bar {
+      background: #374151;
+      height: 0.5rem;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .skills-bar-inner {
+      height: 100%;
+      background: #34d399;
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    .skill-percent {
+      color: #34d399;
+      font-size: 0.875rem;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 0.25rem;
+      float: right;
+    }
+
+    /* Tools */
+    .tools-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .tools-list span {
+      background: #374151;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      transition: background 0.3s ease;
+    }
+
+    .tools-list span:hover {
+      background: #34d399;
+      color: black;
+    }
+
+    /* Certifications */
+    .certifications-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .cert-card {
+      background: #1f2937;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      font-family: monospace;
+      font-weight: bold;
+      font-size: 1.25rem;
+      transition: background 0.3s ease;
+    }
+
+    .cert-card:hover {
+      background: #34d399;
+      color: black;
+    }
+
+    /* Projects */
+    .projects-section h2.section-title {
+      margin-bottom: 1.5rem;
+    }
+
+    .project-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: #111827; /* Reverted to original background */
+      padding: 1.5rem;
+      border-radius: 0.5rem; /* Reverted to original border-radius */
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px #34d39944; /* Reverted to original shadow */
+      border: none; /* Ensure no initial border */
+    }
+
+    .project-card:hover {
+      border: 1px solid #34d399;
+      box-shadow: 0 0 10px #34d399aa;
+      transform: translateY(-5px); /* Reverted to original lift effect */
+    }
+
+    .project-card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-card h3 {
+      margin: 0.5rem 0;
+      color: white; /* Reverted to white title color */
+    }
+
+    .project-card p {
+      font-size: 0.875rem;
+      color: #9ca3af; /* Reverted to original description color */
+      margin: 0.5rem 0;
+    }
+
+    .project-card .github-link {
+      color: #34d399; /* Reverted to original link color */
+      display: block;
+      margin-top: 0.5rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .project-card .github-link:hover {
+      color: #86efac; /* Reverted to original link hover color */
+      text-decoration: underline;
+    }
+
+    /* Blog Posts Styling */
+    .blog-posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .blog-post-card {
+      background: #111827;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 10px rgba(52,211,153,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .blog-post-card:hover {
+      border: 1px solid #34d399;
+      box-shadow: 0 0 10px #34d399aa;
+      transform: translateY(-5px);
+    }
+
+    .blog-post-card h3 {
+      color: #34d399;
+      margin-bottom: 0.5rem;
+    }
+
+    .blog-post-card p {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+    }
+
+    .blog-post-card .read-more {
+      color: #86efac;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+
+    .blog-post-card .read-more:hover {
+      text-decoration: underline;
+    }
+
+    /* Project Modal */
+    .project-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9); /* Reverted to original background opacity */
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-modal.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #1f2937; /* Reverted to original background */
+      padding: 2rem; /* Reverted to original padding */
+      border-radius: 0.75rem; /* Reverted to original border-radius */
+      max-width: 70vw; /* Reverted to original max-width */
+      width: 70vw;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 10px #34d39944; /* Reverted to original shadow */
+      border: none; /* Ensure no initial border */
+      animation: none; /* Removed fade-in animation */
+    }
+
+    .modal-card img {
+      width: 100%;
+      max-height: 200px; /* Reverted to original max-height */
+      object-fit: cover;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem; /* Reverted to original margin-bottom */
+    }
+
+    .modal-card .title {
+      color: #34d399; /* Reverted to original title color */
+      font-size: 1.5rem; /* Reverted to original font-size */
+      font-weight: bold;
+      margin-bottom: 0.5rem; /* Adjusted margin for consistency */
+    }
+
+    .modal-card .description {
+      margin-top: 1rem;
+      color: #9ca3af; /* Reverted to original description color */
+      font-size: 0.875rem; /* Reverted to original font-size */
+      line-height: normal; /* Reverted to normal line-height */
+    }
+
+    .modal-card .github-link {
+      color: #34d399; /* Reverted to original link color */
+      display: block; /* Reverted to original display */
+      margin-top: 1rem; /* Reverted to original margin-top */
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0; /* Removed padding */
+      border: none; /* Removed border */
+      border-radius: 0; /* Removed border-radius */
+    }
+
+    .modal-card .github-link:hover {
+      background-color: transparent; /* Reverted background-color on hover */
+      color: #86efac; /* Reverted to original hover color */
+      border-color: transparent; /* Reverted border-color on hover */
+      text-decoration: underline;
+    }
+
+    .modal-card .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem; /* Reverted to original font-size */
+      cursor: pointer;
+      color: #34d399; /* Reverted to original color */
+      background: none;
+      border: none;
+      padding: 0; /* Removed padding */
+      border-radius: 0; /* Removed border-radius */
+    }
+
+    .modal-card .close-btn:hover {
+      background-color: transparent; /* Reverted background-color on hover */
+      color: #86efac; /* Reverted to original hover color */
+    }
+
+    /* Contact Section */
+    .contact-row {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .contact-row {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-form input,
+      .contact-form textarea {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 100%;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      padding: 0.75rem;
+      background: #1f2937;
+      border: 1px solid #34d399;
+      color: white;
+      border-radius: 0.375rem;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+      max-width: 100%;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      box-shadow: 0 0 10px #34d399aa;
+      border-color: #34d399;
+    }
+
+    .contact-form label {
+      display: block;
+      color: #34d399;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      margin-top: 1rem;
+    }
+
+    .contact-col .social-icons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .contact-col .social-icons a {
+      color: #34d399;
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .contact-col .social-icons a:hover {
+      color: #86efac;
+    }
+
+    @media (max-width: 768px) {
+      .contact-col .social-icons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .contact-col .social-icons a {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: #0a0e17;
+    }
+
+    footer p::before {
+      content: "© Ajoyag 2025 Portfolio";
+      color: #9ca3af;
+      font-size: 0.875rem;
+    }
+
+    /* Section Gaps */
+    .section-gap {
+      height: 0.2cm;
+      background: transparent;
+    }
+
+    /* Typing Animation Fix */
+    .typing {
+      font-size: 2rem;
+      color: #34d399;
+      margin-bottom: 1rem;
+    }
+
+    .typing span::after {
+      content: '|';
+      animation: blink 1s steps(2, start) infinite;
+    }
+
+    /* Skills Glow Only Text */
+    .skills-bar-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .skills-bar {
+      background: #374151;
+      height: 0.5rem;
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-top: 0.25rem;
+    }
+
+    .skills-bar-inner {
+      background: #34d399;
+      height: 100%;
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    .skill-percent {
+      color: #34d399;
+      font-size: 0.875rem;
+      font-weight: bold;
+      margin-top: 0.25rem;
+      float: right;
+    }
+
+    /* Prevent double hover activation */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hover-only-on-hover:hover {
+      border: 1px solid #34d399;
+      box-shadow: 0 0 10px #34d399aa;
+    }
+
+    .hover-only-on-hover:active {
+      border: 1px solid #34d399;
+      box-shadow: 0 0 10px #34d39944;
+    }
+
+    .no-touch-hover {
+      user-select: auto;
+      pointer-events: auto;
+    }
+
+    .no-touch-hover:hover {
+      /* Removed border and box-shadow for skill bars on hover */
+      /* border: 1px solid #34d399; */
+      /* box-shadow: 0 0 10px #34d39944; */
+    }
+
+    .no-touch-hover:active {
+      /* Removed border and box-shadow for skill bars on active */
+      /* border: 1px solid #34d399; */
+      /* box-shadow: 0 0 10px #34d39944; */
+    }
+
+    /* Section Titles Centered */
+    .section-title {
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #34d399;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Responsive Fixes */
+    .about-text {
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .about-text {
+        text-align: left;
+      }
+    }
+
+    /* Modal GitHub Link Color */
+    .modal-card .github-link {
+      color: #34d399;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    .modal-card .github-link:hover {
+      color: #86efac;
+    }
+
+    /* Smooth Scroll Behavior */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="dark-mode" id="app">
+  <!-- Background Effect -->
+  <div class="bg-effect"></div>
+
+  <!-- Terminal Loader Start -->
+  <div id="preloader">
+    <div class="terminal-loader text-center">
+      <p>[+] Initializing Portfolio...</p>
+      <div class="progress-line">
+        <div class="progress" id="loadingBar"></div>
+      </div>
+      <p>[+] Loading Modules: <span id="loadingPercent">0</span>%</p>
+      <p id="accessGranted">[+] Access Granted</p>
+    </div>
+  </div>
+  <!-- Terminal Loader End -->
+
+  <!-- Navigation Start -->
+  <header class="nav" id="navbar">
+    <a href="#home" class="nav-logo no-touch-hover">
+      <img src="assets/images/logo.png" alt="Logo" width="30" height="30" />
+      SECURE
+    </a>
+    <button class="menu-button" onclick="toggleMenu()">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#projects">Projects</a>
+      <a href="#blog">Blog</a> <!-- New Blog Link -->
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  <!-- Navigation End -->
+
+  <!-- Back to Top Button Start -->
+  <button id="backToTop" title="Go to top">↑</button>
+  <!-- Back to Top Button End -->
+
+  <!-- Hero Section Start -->
+  <section class="hero" id="home">
+    <h1 class="glow-title">Defending the Digital Frontier</h1>
+    <div class="name">Ajoyag</div>
+    <div class="typing" id="typingText"><span>|</span></div>
+    <div class="centered-button">
+      <a href="#contact" class="btn-contact">Contact Me</a>
+      <a href="assets/documents/resume.pdf" download="Ajoyag_Resume.pdf" class="btn-cv">View CV</a>
+    </div>
+  </section>
+  <!-- Hero Section End -->
+
+  <!-- Section Gap Start -->
+  <div class="section-gap"></div>
+  <!-- Section Gap End -->
+
+  <!-- About Me Section Start -->
+  <section class="section about-section" id="about">
+    <div class="container about-grid">
+      <div class="about-text">
+        <h2 class="section-title">About Me</h2>
+        <p>I’m a cybersecurity enthusiast with a strong interest in ethical hacking, red teaming, and security research. What began as curiosity has grown into a focused effort to understand how systems work, where they break, and how to secure them.</p>
+        <p>Currently working as an InfoSec Intern at TEPL Hosur, I’m gaining hands-on experience through Capture The Flag competitions, bug bounty programs, and continuous research into real-world vulnerabilities.</p>
+        <p>With a background in Mechatronics, I bring a unique perspective to the field—especially in areas like hardware, embedded systems, and OT/IoT/IIoT security, where the digital meets the physical.</p>
+        <p>Alongside security, I’ve also explored creative problem-solving as a No-Code Web Developer—translating ideas into live projects by guiding AI tools with clear direction and intent.</p>
+        <p>I’m working to build a career that bridges curiosity and impact—securing systems, solving problems, and constantly learning along the way.</p>
+      </div>
+      <div class="about-pic"></div>
+    </div>
+  </section>
+  <!-- About Me Section End -->
+
+  <!-- Section Gap Start -->
+  <div class="section-gap"></div>
+  <!-- Section Gap End -->
+
+  <!-- Skills Section Start -->
+  <section class="section skills-section" id="skills">
+    <div class="container">
+      <h2 class="section-title">Skills & Tools</h2>
+      <div class="skills-list">
+        <ul id="skillsList"></ul>
+        <h3 class="section-subtitle">Tools</h3>
+        <div class="tools-list" id="toolsList"></div>
+      </div>
+    </div>
+  </section>
+  <!-- Skills Section End -->
+
+  <!-- Section Gap Start -->
+  <div class="section-gap"></div>
+  <!-- Section Gap End -->
+
+  <!-- Certifications Section Start -->
+  <section class="section certifications-section" id="certifications">
+    <div class="container">
+      <h2 class="section-title">Certifications</h2>
+      <div class="certifications-grid" id="certGrid"></div>
+    </div>
+  </section>
+  <!-- Certifications Section End -->
+
+  <!-- Section Gap Start -->
+  <div class="section-gap"></div>
+  <!-- Section Gap End -->
+
+  <!-- Projects Section Start -->
+  <section class="section projects-section" id="projects">
+    <div class="container">
+      <h2 class="section-title">Projects / Case Studies</h2>
+      <div class="project-cards" id="projectCards"></div>
+    </div>
+  </section>
+  <!-- Projects Section End -->
+
+  <!-- Section Gap Start -->
+  <div class="section-gap"></div>
+  <!-- Section Gap End -->
+
+  <!-- Blog Section Start -->
+  <section class="section blog-section" id="blog">
+    <div class="container">
+      <h2 class="section-title">Blog</h2>
+      <div class="blog-posts-grid">
+        <div class="blog-post-card hover-only-on-hover">
+          <h3>Understanding Phishing Attacks</h3>
+          <p>A deep dive into common phishing techniques and how to protect yourself and your organization.</p>
+          <a href="#" class="read-more">Read More →</a>
+        </div>
+        <div class="blog-post-card hover-only-on-hover">
+          <h3>Top 5 Cybersecurity Tools for Beginners</h3>
+          <p>An introduction to essential tools for aspiring cybersecurity professionals.</p>
+          <a href="#" class="read-more">Read More →</a>
+        </div>
+        <div class="blog-post-card hover-only-on-hover">
+          <h3>Securing IoT Devices in Your Home</h3>
+          <p>Practical tips and best practices for enhancing the security of your smart home devices.</p>
+          <a href="#" class="read-more">Read More →</a>
+        </div>
+        <div class="blog-post-card hover-only-on-hover">
+          <h3>The Importance of Regular Security Audits</h3>
+          <p>Why continuous auditing is crucial for maintaining a strong security posture.</p>
+          <a href="#" class="read-more">Read More →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Blog Section End -->
+
+  <!-- Section Gap Start -->
+  <div class="section-gap"></div>
+  <!-- Section Gap End -->
+
+  <!-- Contact Section Start -->
+  <section class="section contact-section" id="contact">
+    <div class="container">
+      <h2 class="section-title">Contact</h2>
+      <div class="contact-row">
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('Message sent!');">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Your Name" required />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="your@email.com" required />
+
+          <label for="message">Message</label>
+          <textarea id="message" rows="4" placeholder="Write something..."></textarea>
+
+          <button type="submit" class="btn-contact">Send Message</button>
+        </form>
+
+        <div class="contact-col">
+          <p class="text-center">Feel free to reach out for collaboration opportunities or freelance work.</p>
+          <div class="social-icons text-center mt-4">
+            <a href="#"><i class="fab fa-linkedin-in"></i> LinkedIn</a> |
+            <a href="#"><i class="fab fa-github"></i> GitHub</a> |
+            <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Contact Section End -->
+
+  <!-- Footer Start -->
+  <footer class="footer">
+    <p></p>
+  </footer>
+  <!-- Footer End -->
+
+  <!-- Project Modal Start -->
+  <div class="project-modal" id="projectModal">
+    <div class="modal-card">
+      <div class="close-btn" onclick="hideProject()">×</div>
+      <img id="modalImg" src="" alt="Project Image" />
+      <h3 class="title" id="modalTitle">Loading...</h3>
+      <p class="description" id="modalDescription">More details coming soon.</p>
+      <a href="#" target="_blank" id="modalGithub" class="github-link">View on GitHub →</a>
+    </div>
+  </div>
+  <!-- Project Modal End -->
+
+  <!-- Scripts Start -->
+  <script type="text/javascript">
+    // Terminal loader
+    let progress = 0;
+    const loadingBar = document.querySelector("#loadingBar");
+    const percentEl = document.getElementById("loadingPercent");
+    const accessEl = document.getElementById("accessGranted");
+    const preloader = document.getElementById("preloader");
+
+    const FAST_LOAD_THRESHOLD_MS = 3 * 60 * 1000; // 3 minutes in milliseconds
+    let loaderSpeed = 50; // Default speed for progress update interval
+
+    const lastVisitTime = localStorage.getItem('lastVisitTime');
+    if (lastVisitTime) {
+      const timeElapsed = Date.now() - parseInt(lastVisitTime);
+      if (timeElapsed < FAST_LOAD_THRESHOLD_MS) {
+        loaderSpeed = 10; // Faster speed if within 3 minutes
+      } else {
+        localStorage.removeItem('lastVisitTime'); // Clear if outside the window
+      }
+    }
+
+    const loaderInterval = setInterval(() => {
+      progress += 2;
+      loadingBar.style.width = progress + "%";
+      percentEl.textContent = progress;
+
+      if (progress >= 100) {
+        clearInterval(loaderInterval);
+        accessEl.classList.add("loaded");
+
+        // Smooth fade out
+        preloader.style.opacity = "0";
+
+        setTimeout(() => {
+          preloader.style.display = "none";
+          document.body.style.overflow = "auto";
+          window.location.hash = "home"; // Scrolls to Home section smoothly
+          localStorage.setItem('lastVisitTime', Date.now()); // Store timestamp after preloader finishes
+        }, 500); // Match CSS transition duration
+    }
+    }, loaderSpeed); // Use dynamic loaderSpeed
+
+    // Typing Animation
+    const typingText = ["Ethical Hacker", "Security Analyst", "Penetration Tester"];
+    let typingIndex = 0;
+    let charIndex = 0;
+    const typedTextEl = document.getElementById("typingText");
+
+    function type() {
+      const current = typingText[typingIndex];
+      if (!typedTextEl.innerHTML.includes('|')) {
+        typedTextEl.innerHTML = `<span>${current.substring(0, charIndex)}</span>`;
+        charIndex++;
+        if (charIndex > current.length + 1) {
+          charIndex = 0;
+          typingIndex = (typingIndex + 1) % typingText.length;
+        }
+        setTimeout(type, 100); // faster typing
+      } else {
+        typedTextEl.innerHTML = `<span>${current.substring(0, charIndex)}</span><span>|</span>`;
+        charIndex++;
+        if (charIndex > current.length) {
+          charIndex = 0;
+          typingIndex = (typingIndex + 1) % typingText.length;
+        }
+        setTimeout(type, 100);
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      typedTextEl.innerHTML = '<span></span>';
+      type();
+    });
+
+    // Load Skills
+    const skillsData = [
+      { name: "Network Security", level: 90 },
+      { name: "Web Application Security", level: 85 },
+      { name: "Penetration Testing", level: 92 },
+      { name: "SIEM & SOC", level: 88 },
+      { name: "Risk Assessment", level: 80 }
+    ];
+
+    const toolsData = ["Kali Linux", "Burp Suite", "Wireshark", "Metasploit", "Nmap"];
+
+    const certificationsData = ["CEH", "OSCP", "CISSP", "CompTIA Security+"];
+
+    const projectsData = [
+      {
+        title: "Web Application Pentest Report",
+        description: "Performed comprehensive penetration testing on a simulated e-commerce platform.",
+        image: "https://placehold.co/600x400/green/black?text=PENTEST+REPORT",
+        role: "Lead Penetration Tester",
+        github: "https://github.com/example/webpentest"
+      },
+      {
+        title: "Vulnerability Scanning Dashboard",
+        description: "Built a dashboard to visualize scan results from Nessus, Nmap, and OpenVAS.",
+        image: "https://placehold.co/600x400/green/black?text=SCAN+DASHBOARD",
+        role: "Full Stack Developer",
+        github: "https://github.com/example/vuln-dashboard"
+      },
+      {
+        title: "Active Directory Lab Attack Simulation",
+        description: "Designed a lab environment to simulate AD attacks like Kerberoasting and Pass-the-Hash.",
+        image: "https://placehold.co/600x400/green/black?text=AD+SIMULATION",
+        role: "Lab Architect",
+        github: "https://github.com/example/ad-lab"
+      }
+    ];
+
+    const skillsList = document.getElementById("skillsList");
+    skillsData.forEach(skill => {
+      const li = document.createElement("li");
+      // Removed the 'no-touch-hover' class from skill list items
+      li.innerHTML = `
+        <div class="skills-bar-container">
+          <div class="skill-name">${skill.name}</div>
+          <div class="skills-bar">
+            <div class="skills-bar-inner" style="width: ${skill.level}%;"></div>
+          </div>
+          <div class="skill-percent">${skill.level}%</div>
+        </div>
+      `;
+      // Removed onclick from skills as it's not designed to show a modal with complex data
+      skillsList.appendChild(li);
+    });
+
+    // Load Tools
+    const toolsList = document.getElementById("toolsList");
+    toolsData.forEach(tool => {
+      const span = document.createElement("span");
+      span.textContent = tool;
+      toolsList.appendChild(span);
+    });
+
+    // Load Certifications
+    const certGrid = document.getElementById("certGrid");
+    certificationsData.forEach(cert => {
+      const div = document.createElement("div");
+      div.className = "cert-card no-touch-hover";
+      div.textContent = cert;
+      certGrid.appendChild(div);
+    });
+
+    // Load Projects
+    const projectCards = document.getElementById("projectCards");
+    projectsData.forEach(project => {
+      const div = document.createElement("div");
+      div.className = "project-card hover-only-on-hover";
+      div.innerHTML = `
+        <img src="${project.image}" alt="${project.title}" />
+        <h3>${project.title}</h3>
+        <p>${project.description}</p>
+        <p class="role">Role: ${project.role}</p>
+        <a href="${project.github}" target="_blank" class="github-link" onclick="event.stopPropagation();">View on GitHub →</a>
+      `;
+      div.onclick = () => showProject(project);
+      projectCards.appendChild(div);
+    });
+
+    // Modal Functions
+    function showProject(project) {
+      const modal = document.getElementById("projectModal");
+      const card = modal.querySelector(".modal-card");
+      card.querySelector("#modalImg").src = project.image || "";
+      card.querySelector("#modalTitle").textContent = project.title || "Untitled";
+      card.querySelector("#modalDescription").textContent = project.description || "More details coming soon."; // Use project.description here
+      card.querySelector("#modalGithub").href = project.github || "#";
+      modal.classList.add("active");
+    }
+
+    function hideProject() {
+      document.getElementById("projectModal").classList.remove("active");
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") hideProject();
+    });
+
+    document.getElementById("projectModal").addEventListener("click", (e) => {
+      if (e.target.id === "projectModal") hideProject();
+    });
+
+    // Toggle Mobile Menu
+    function toggleMenu() {
+      document.getElementById("navLinks").classList.toggle("active");
+    }
+
+    document.addEventListener("click", (e) => {
+      const navLinks = document.getElementById("navLinks");
+      const nav = document.querySelector(".nav");
+      if (
+        navLinks.classList.contains("active") &&
+        !nav.contains(e.target) &&
+        e.target !== document.querySelector('.menu-button') // Prevent closing when clicking menu button
+      ) {
+        navLinks.classList.remove("active");
+      }
+    });
+
+    // Hide Nav on Scroll Down and collapse menu on any scroll
+    let lastScroll = 0;
+    const nav = document.querySelector('.nav');
+    const navLinks = document.getElementById("navLinks");
+    window.addEventListener('scroll', () => {
+      const current = window.scrollY;
+
+      // Hide/Show main nav bar based on scroll direction
+      if (current > lastScroll && current > 100) {
+        nav.style.transform = 'translateY(-100%)';
+      } else {
+        nav.style.transform = 'translateY(0)';
+      }
+
+      // Collapse mobile menu if it's open on any scroll
+      if (navLinks.classList.contains('active')) {
+        navLinks.classList.remove('active');
+      }
+
+      lastScroll = current <= 0 ? 0 : current;
+    });
+
+    // Show/hide Back to Top
+    const backToTop = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      backToTop.classList.toggle("show", window.scrollY > 400);
+    });
+
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+
+    // Smooth Scroll Links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener("click", function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+
+    // Prevent ghost click effects
+    // This logic is for touch devices to manage hover states.
+    // It's a bit complex and might be simplified or removed depending on desired behavior.
+    // For now, keeping it but noting its purpose.
+    document.querySelectorAll('.hover-only-on-hover').forEach(el => {
+      el.addEventListener('touchstart', () => {
+        document.querySelectorAll('.hover-only-on-hover').forEach(e => e.classList.remove('active-touch-hover')); // Custom class to manage touch
+        el.classList.add('active-touch-hover');
+      });
+    });
+
+    document.addEventListener('touchend', () => {
+      setTimeout(() => {
+        document.querySelectorAll('.hover-only-on-hover').forEach(e => e.classList.remove('active-touch-hover'));
+      }, 500); // Shorter timeout might be better
+    });
+  </script>
+  <!-- Scripts End -->
+</body>
+</html>
