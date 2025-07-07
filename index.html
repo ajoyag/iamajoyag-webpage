@@ -1224,50 +1224,53 @@
     const percentEl = document.getElementById("loadingPercent");
     const accessEl = document.getElementById("accessGranted");
 
-    const FAST_LOAD_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes in milliseconds
+    // Define speeds based on user requirements
+    const NORMAL_PROGRESS_INTERVAL = 40; // 2 seconds / 50 steps = 40ms per step
+    const FAST_PROGRESS_INTERVAL = 10;    // 0.5 seconds / 50 steps = 10ms per step
 
-    // Check if the page was refreshed (using performance.navigation.type)
-    // and if the last visit was within the threshold.
-    const isPageRefreshed = performance.navigation.type === performance.navigation.TYPE_RELOAD;
-    const lastVisitTime = localStorage.getItem('lastVisitTime');
-    const timeElapsed = Date.now() - parseInt(lastVisitTime || 0); // Handle first visit
+    const NORMAL_ACCESS_GRANTED_DELAY = 1000; // 1 second
+    const FAST_ACCESS_GRANTED_DELAY = 500;     // 0.5 seconds
 
-    if (isPageRefreshed && lastVisitTime && timeElapsed < FAST_LOAD_THRESHOLD_MS) {
-      // If refreshed within 5 minutes, hide loader instantly
-      preloader.style.display = "none";
-      document.body.style.overflow = "auto";
-      window.location.hash = "home"; // Scrolls to Home section smoothly
-    } else {
-      // Otherwise, run the loader animation
-      let progress = 0;
-      const loaderInterval = setInterval(() => {
-        progress += 2;
-        loadingBar.style.width = progress + "%";
-        percentEl.textContent = progress;
+    const PRELOADER_FADE_OUT_DURATION = 500; // 0.5 seconds (matches CSS transition)
 
-        if (progress >= 100) {
-          clearInterval(loaderInterval);
-          accessEl.classList.add("loaded");
+    let currentProgressInterval = NORMAL_PROGRESS_INTERVAL;
+    let currentAccessGrantedDelay = NORMAL_ACCESS_GRANTED_DELAY;
 
-          // Smooth fade out
-          preloader.style.opacity = "0";
-
-          setTimeout(() => {
-            preloader.style.display = "none";
-            document.body.style.overflow = "auto";
-            window.location.hash = "home"; // Scrolls to Home section smoothly
-          }, 500); // Match CSS transition duration
-        }
-      }, 50); // Standard speed for full load
+    // Determine speed based on URL hash
+    // If URL contains #home, it's a repetitive refresh, so make it faster.
+    // Otherwise, it's a new session/first load, so use normal speed.
+    if (window.location.hash === '#home') {
+      currentProgressInterval = FAST_PROGRESS_INTERVAL;
+      currentAccessGrantedDelay = FAST_ACCESS_GRANTED_DELAY;
     }
-    // Always update lastVisitTime when the page loads
-    localStorage.setItem('lastVisitTime', Date.now());
 
-    // Clear lastVisitTime from localStorage when the user closes the tab/browser
-    // This ensures the loader appears on a new session (not just a refresh)
-    window.addEventListener('beforeunload', () => {
-        localStorage.removeItem('lastVisitTime');
-    });
+    let progress = 0;
+    const loaderInterval = setInterval(() => {
+      progress += 2;
+      loadingBar.style.width = progress + "%";
+      percentEl.textContent = progress;
+
+      if (progress >= 100) {
+        clearInterval(loaderInterval); // Stop the progress animation
+
+        // Step 2: Show "Access Granted" after progress is complete, with its specific delay
+        setTimeout(() => {
+          accessEl.classList.add("loaded"); // Make "Access Granted" visible
+
+          // Step 3: Fade out the entire preloader after "Access Granted" delay
+          setTimeout(() => {
+            preloader.style.opacity = "0"; // Start fading out the preloader
+
+            // Step 4: Hide the preloader completely after its fade-out transition
+            setTimeout(() => {
+              preloader.style.display = "none";
+              document.body.style.overflow = "auto"; // Re-enable scrolling
+              window.location.hash = "home"; // Ensure scroll to home
+            }, PRELOADER_FADE_OUT_DURATION); // This matches the CSS transition duration
+          }, currentAccessGrantedDelay); // Delay for "Access Granted" text
+        }, 0); // This 0ms timeout ensures the sequence starts right after clearInterval
+      }
+    }, currentProgressInterval); // This controls the speed of the 0-100% progress bar
 
 
     // Dynamic Background Pattern
@@ -1468,7 +1471,7 @@
 
     document.addEventListener("click", (e) => {
       const navLinks = document.getElementById("navLinks");
-      const nav = document.querySelector(".nav");
+      const nav = document.querySelector('.nav');
       // Ensure click on theme toggle doesn't close menu
       if (
         navLinks.classList.contains("active") &&
