@@ -9,7 +9,7 @@
   <link rel="icon" href="assets/images/logo.ico" type="image/x-icon">
 
   <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&family=Space+Mono:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Icons (Font Awesome CDN) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -404,20 +404,26 @@
     }
 
     .name {
-      font-size: 1.25rem;
-      color: black; /* Set text color to black */
+      font-size: 1.5rem; /* Increased font size */
+      color: black; /* Text color black */
       margin: 1rem 0;
-      font-weight: bold; /* Ensure it's bold */
-      /* White outline effect using text-shadow */
+      font-weight: bold;
+      /* External glow: blue in light mode, green in dark mode (using accent-color) */
       text-shadow:
-        1px 1px 0 white,
-        -1px -1px 0 white,
-        1px -1px 0 white,
-        -1px 1px 0 white,
-        0 1px 0 white,
-        1px 0 0 white,
-        0 -1px 0 white,
-        -1px 0 0 white;
+        0 0 5px var(--accent-color), /* Initial glow */
+        0 0 10px var(--accent-color), /* Wider glow */
+        0 0 15px var(--accent-color); /* Even wider glow for "external" effect */
+      transition: color 0.3s ease, text-shadow 0.3s ease; /* Smooth transition for theme change */
+      font-family: 'Orbitron', sans-serif; /* Apply Orbitron font */
+    }
+
+    /* Enhance glow slightly in dark mode */
+    body.dark-mode .name {
+      text-shadow:
+        0 0 5px var(--accent-color),
+        0 0 10px var(--accent-color),
+        0 0 20px var(--accent-color), /* More pronounced glow */
+        0 0 30px var(--accent-color); /* Even more pronounced glow */
     }
 
     .centered-button {
@@ -1164,7 +1170,7 @@
         </div>
       </div>
       <!-- New "View more blog posts!" link -->
-      <a href="#" class="view-more-link">View more blog posts!</a>
+      <a href="blog.html" class="view-more-link">View more blog posts!</a>
     </div>
   </section>
   <!-- Blog Section End -->
