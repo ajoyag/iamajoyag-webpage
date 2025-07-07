@@ -188,6 +188,12 @@
       100% { background-position: 0 100vh; }
     }
 
+    /* New animation for glowing title */
+    @keyframes pulsateGlow {
+      0%, 100% { text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color), 0 0 15px var(--accent-color); }
+      50% { text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color), 0 0 30px var(--accent-color); }
+    }
+
     /* Terminal Loader */
     #preloader {
       position: fixed;
@@ -199,8 +205,19 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      transition: opacity 0.5s ease; /* Loader transition */
       color: var(--text-primary);
+      /* Initial state for dissolve effect */
+      opacity: 1;
+      transform: scale(1);
+      filter: blur(0px);
+      transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease; /* Dissolve transition */
+    }
+
+    /* Class to trigger the dissolve effect */
+    #preloader.dissolve-out {
+      opacity: 0;
+      transform: scale(0.5); /* Shrink significantly */
+      filter: blur(20px); /* Heavy blur */
     }
 
     .terminal-loader p,
@@ -377,19 +394,8 @@
     .glow-title {
       font-size: 2.5rem;
       color: var(--text-primary);
-      opacity: 0.8;
-      animation: dimGlow 3s ease-in-out infinite;
-    }
-
-    @keyframes dimGlow {
-      0%, 100% { opacity: 0.8; }
-      50% { opacity: 1; }
-    }
-
-    .typing {
-      font-size: 2rem;
-      color: var(--accent-color);
-      margin-bottom: 1rem;
+      /* Apply the new pulsating glow animation */
+      animation: pulsateGlow 3s ease-in-out infinite;
     }
 
     @keyframes blink {
@@ -399,8 +405,19 @@
 
     .name {
       font-size: 1.25rem;
-      color: var(--text-secondary);
+      color: black; /* Set text color to black */
       margin: 1rem 0;
+      font-weight: bold; /* Ensure it's bold */
+      /* White outline effect using text-shadow */
+      text-shadow:
+        1px 1px 0 white,
+        -1px -1px 0 white,
+        1px -1px 0 white,
+        -1px 1px 0 white,
+        0 1px 0 white,
+        1px 0 0 white,
+        0 -1px 0 white,
+        -1px 0 0 white;
     }
 
     .centered-button {
@@ -976,9 +993,27 @@
     html {
       scroll-behavior: smooth;
     }
+
+    /* New styles for "View More" links */
+    .view-more-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .view-more-link:hover {
+      color: var(--accent-hover);
+      transform: translateY(-2px);
+      text-decoration: underline;
+    }
   </style>
 </head>
-<body id="app">
+<body>
   <!-- Background Effect -->
   <div class="bg-effect" id="bgEffect"></div>
 
@@ -1092,6 +1127,8 @@
     <div class="container">
       <h2 class="section-title">Projects / Case Studies</h2>
       <div class="project-cards" id="projectCards"></div>
+      <!-- New "View more projects!" link -->
+      <a href="#" class="view-more-link">View more projects!</a>
     </div>
   </section>
   <!-- Projects Section End -->
@@ -1126,6 +1163,8 @@
           <a href="#" class="read-more">Read More →</a>
         </div>
       </div>
+      <!-- New "View more blog posts!" link -->
+      <a href="#" class="view-more-link">View more blog posts!</a>
     </div>
   </section>
   <!-- Blog Section End -->
@@ -1236,12 +1275,18 @@
     let currentProgressInterval = NORMAL_PROGRESS_INTERVAL;
     let currentAccessGrantedDelay = NORMAL_ACCESS_GRANTED_DELAY;
 
+    // Define the list of hashes that trigger faster loading
+    const fastLoadHashes = ['#home', '#about', '#skills', '#certifications', '#blog', '#contact'];
+
     // Determine speed based on URL hash
-    // If URL contains #home, it's a repetitive refresh, so make it faster.
+    // If URL contains any of the specified hashes, it's a repetitive refresh, so make it faster.
     // Otherwise, it's a new session/first load, so use normal speed.
-    if (window.location.hash === '#home') {
+    if (fastLoadHashes.includes(window.location.hash)) {
       currentProgressInterval = FAST_PROGRESS_INTERVAL;
       currentAccessGrantedDelay = FAST_ACCESS_GRANTED_DELAY;
+      console.log(`[Loader] Fast load triggered. Current hash: ${window.location.hash}`);
+    } else {
+      console.log(`[Loader] Normal load triggered. Current hash: ${window.location.hash}`);
     }
 
     let progress = 0;
@@ -1257,16 +1302,20 @@
         setTimeout(() => {
           accessEl.classList.add("loaded"); // Make "Access Granted" visible
 
-          // Step 3: Fade out the entire preloader after "Access Granted" delay
+          // Step 3: Trigger the dissolve effect for the preloader
           setTimeout(() => {
-            preloader.style.opacity = "0"; // Start fading out the preloader
+            preloader.classList.add("dissolve-out"); // Add class to trigger dissolve animation
 
-            // Step 4: Hide the preloader completely after its fade-out transition
+            // Step 4: Hide the preloader completely after its dissolve transition
             setTimeout(() => {
               preloader.style.display = "none";
               document.body.style.overflow = "auto"; // Re-enable scrolling
-              window.location.hash = "home"; // Ensure scroll to home
-            }, PRELOADER_FADE_OUT_DURATION); // This matches the CSS transition duration
+              // Only set to #home if no hash was initially present, or if the hash was not a fastLoadHash.
+              // This prevents changing the hash if the user explicitly loaded a specific section.
+              if (window.location.hash === '' || !fastLoadHashes.includes(window.location.hash)) {
+                  window.location.hash = "home";
+              }
+            }, PRELOADER_FADE_OUT_DURATION); // This matches the CSS transition duration for dissolve
           }, currentAccessGrantedDelay); // Delay for "Access Granted" text
         }, 0); // This 0ms timeout ensures the sequence starts right after clearInterval
       }
@@ -1329,22 +1378,21 @@
 
     function type() {
       const current = typingText[typingIndex];
-      if (!typedTextEl.innerHTML.includes('|')) {
-        typedTextEl.innerHTML = `<span>${current.substring(0, charIndex)}</span>`;
+      // If the current character index is less than the length of the current text, continue typing
+      if (charIndex < current.length) {
+        typedTextEl.innerHTML = `<span>${current.substring(0, charIndex + 1)}</span><span>|</span>`;
         charIndex++;
-        if (charIndex > current.length + 1) {
-          charIndex = 0;
-          typingIndex = (typingIndex + 1) % typingText.length;
-        }
-        setTimeout(type, 100); // faster typing
+        setTimeout(type, 75); // Faster typing speed (75ms per character)
       } else {
-        typedTextEl.innerHTML = `<span>${current.substring(0, charIndex)}</span><span>|</span>`;
-        charIndex++;
-        if (charIndex > current.length) {
+        // Word is fully typed, now hold for 0.5 seconds
+        typedTextEl.innerHTML = `<span>${current}</span><span>|</span>`; // Ensure the full word is displayed with cursor
+        setTimeout(() => {
+          // After 0.5 seconds, clear the text and move to the next phrase
           charIndex = 0;
           typingIndex = (typingIndex + 1) % typingText.length;
-        }
-        setTimeout(type, 100);
+          typedTextEl.innerHTML = '<span></span>'; // Clear text immediately before starting next word
+          setTimeout(type, 0); // Start typing next word immediately after clearing
+        }, 500); // Hold for 0.5 seconds
       }
     }
 
