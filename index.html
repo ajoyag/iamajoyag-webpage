@@ -15,7 +15,64 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
-    /* All your CSS styles here */
+    /* CSS Variables for Theme */
+    :root {
+      /* Light Mode Defaults */
+      --bg-primary: #f0f2f5;
+      --bg-secondary: #ffffff;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --accent-color: #007bff;
+      --accent-hover: #0056b3;
+      --border-color: #e0e0e0;
+      --card-shadow: rgba(0,0,0,0.1);
+      --nav-bg: rgba(255,255,255,0.8);
+      --nav-border: #e0e0e0;
+      --loader-bg: #f0f2f5;
+      --loader-progress-bg: #007bff;
+      --loader-line-bg: #cccccc;
+      --button-text: white;
+      --profile-pic-bg: #e0e0e0;
+      --about-text-glow: none; /* No text shadow in light mode */
+      --project-card-border: transparent;
+      --project-card-shadow-hover: rgba(0,0,0,0.2);
+      --modal-overlay-bg: rgba(0,0,0,0.6);
+      --form-field-bg: #ffffff;
+      --form-field-border: #cccccc;
+      --form-field-focus-shadow: rgba(0,123,255,0.4);
+      --footer-bg: #e0e0e0;
+      --footer-border: #cccccc;
+    }
+
+    /* Dark Mode Overrides */
+    body.dark-mode {
+      --bg-primary: #0d1117;
+      --bg-secondary: #111b2e;
+      --text-primary: white;
+      --text-secondary: #9ca3af;
+      --accent-color: #34d399;
+      --accent-hover: #86efac;
+      --border-color: #374151;
+      --card-shadow: rgba(52,211,153,0.2);
+      --nav-bg: rgba(0,0,0,0.3);
+      --nav-border: #374151;
+      --loader-bg: black;
+      --loader-progress-bg: #34d399;
+      --loader-line-bg: #374151;
+      --button-text: black;
+      --profile-pic-bg: #1f2937;
+      --about-text-glow: 0 0 5px #34d399aa;
+      --project-card-border: none;
+      --project-card-shadow-hover: #34d399aa;
+      --modal-overlay-bg: rgba(0,0,0,0.9);
+      --form-field-bg: #1f2937;
+      --form-field-border: #34d399;
+      --form-field-focus-shadow: #34d399aa;
+      --footer-bg: #0a0e17;
+      --footer-border: #374151;
+    }
+
+    /* General Styling */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -24,9 +81,10 @@
 
     body {
       font-family: 'Source Code Pro', monospace;
-      color: white;
-      background-color: #0d1117;
+      color: var(--text-primary);
+      background-color: var(--bg-primary);
       overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     /* Global Background Effect */
@@ -35,10 +93,95 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: -2;
-      background-image: radial-gradient(circle at center, rgba(0,255,0,0.05), transparent 60%), repeating-radial-gradient(circle at center, rgba(0,255,0,0.03), rgba(0,255,0,0.03) 10px, transparent 10px, transparent 20px);
       animation: moveMatrix 60s linear infinite;
       pointer-events: none;
     }
+
+    /* Dynamic Background Patterns with bright neon glow (colors remain neon, but opacity might be adjusted for light background visibility) */
+    /* Green Patterns (5) */
+    .bg-pattern-1 { /* Green Circles */
+      background-image: radial-gradient(circle at center, rgba(0,255,0,0.15), transparent 60%), repeating-radial-gradient(circle at center, rgba(0,255,0,0.10), rgba(0,255,0,0.10) 10px, transparent 10px, transparent 20px);
+    }
+    .bg-pattern-2 { /* Green Grid */
+      background-image: linear-gradient(to right, rgba(0,255,0,0.10) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,255,0,0.10) 1px, transparent 1px);
+      background-size: 25px 25px;
+    }
+    .bg-pattern-3 { /* Green Horizontal Lines */
+      background-image: linear-gradient(to right, rgba(0,255,0,0.10) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .bg-pattern-4 { /* Green Vertical Dashed Lines */
+      background-image: repeating-linear-gradient(to bottom, rgba(0,255,0,0.15), rgba(0,255,0,0.15) 5px, transparent 5px, transparent 10px);
+      background-size: 100% 20px;
+    }
+    .bg-pattern-5 { /* Green Diagonal Lines */
+      background-image: linear-gradient(45deg, rgba(0,255,0,0.15) 1px, transparent 1px), linear-gradient(-45deg, rgba(0,255,0,0.15) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    /* Blue Patterns (5) */
+    .bg-pattern-6 { /* Blue Circles */
+      background-image: radial-gradient(circle at center, rgba(0,255,255,0.18), transparent 60%), repeating-radial-gradient(circle at center, rgba(0,255,255,0.12), rgba(0,255,255,0.12) 10px, transparent 10px, transparent 20px);
+    }
+    .bg-pattern-7 { /* Blue Grid */
+      background-image: linear-gradient(to right, rgba(0,255,255,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,255,255,0.12) 1px, transparent 1px);
+      background-size: 25px 25px;
+    }
+    .bg-pattern-8 { /* Blue Horizontal Lines */
+      background-image: linear-gradient(to right, rgba(0,255,255,0.12) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .bg-pattern-9 { /* Blue Vertical Dashed Lines */
+      background-image: repeating-linear-gradient(to bottom, rgba(0,255,255,0.18), rgba(0,255,255,0.18) 5px, transparent 5px, transparent 10px);
+      background-size: 100% 20px;
+    }
+    .bg-pattern-10 { /* Blue Diagonal Lines */
+      background-image: linear-gradient(45deg, rgba(0,255,255,0.18) 1px, transparent 1px), linear-gradient(-45deg, rgba(0,255,255,0.18) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    /* Purple Patterns (5) */
+    .bg-pattern-11 { /* Purple Circles */
+      background-image: radial-gradient(circle at center, rgba(200,0,255,0.15), transparent 60%), repeating-radial-gradient(circle at center, rgba(200,0,255,0.10), rgba(200,0,255,0.10) 10px, transparent 10px, transparent 20px);
+    }
+    .bg-pattern-12 { /* Purple Grid */
+      background-image: linear-gradient(to right, rgba(200,0,255,0.10) 1px, transparent 1px), linear-gradient(to bottom, rgba(200,0,255,0.10) 1px, transparent 1px);
+      background-size: 25px 25px;
+    }
+    .bg-pattern-13 { /* Purple Horizontal Lines */
+      background-image: linear-gradient(to right, rgba(200,0,255,0.10) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .bg-pattern-14 { /* Purple Vertical Dashed Lines */
+      background-image: repeating-linear-gradient(to bottom, rgba(200,0,255,0.15), rgba(200,0,255,0.15) 5px, transparent 5px, transparent 10px);
+      background-size: 100% 20px;
+    }
+    .bg-pattern-15 { /* Purple Diagonal Lines */
+      background-image: linear-gradient(45deg, rgba(200,0,255,0.15) 1px, transparent 1px), linear-gradient(-45deg, rgba(200,0,255,0.15) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    /* Red Patterns (5) */
+    .bg-pattern-16 { /* Red Circles */
+      background-image: radial-gradient(circle at center, rgba(255,0,100,0.15), transparent 60%), repeating-radial-gradient(circle at center, rgba(255,0,100,0.10), rgba(255,0,100,0.10) 10px, transparent 10px, transparent 20px);
+    }
+    .bg-pattern-17 { /* Red Grid */
+      background-image: linear-gradient(to right, rgba(255,0,100,0.10) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,0,100,0.10) 1px, transparent 1px);
+      background-size: 25px 25px;
+    }
+    .bg-pattern-18 { /* Red Horizontal Lines */
+      background-image: linear-gradient(to right, rgba(255,0,100,0.10) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .bg-pattern-19 { /* Red Vertical Dashed Lines */
+      background-image: repeating-linear-gradient(to bottom, rgba(255,0,100,0.15), rgba(255,0,100,0.15) 5px, transparent 5px, transparent 10px);
+      background-size: 100% 20px;
+    }
+    .bg-pattern-20 { /* Red Diagonal Lines */
+      background-image: linear-gradient(45deg, rgba(255,0,100,0.15) 1px, transparent 1px), linear-gradient(-45deg, rgba(255,0,100,0.15) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
 
     @keyframes moveMatrix {
       0% { background-position: 0 0; }
@@ -49,7 +192,7 @@
     #preloader {
       position: fixed;
       inset: 0;
-      background: black;
+      background: var(--loader-bg);
       z-index: 9999;
       display: flex;
       flex-direction: column;
@@ -57,6 +200,7 @@
       justify-content: center;
       text-align: center;
       transition: opacity 0.5s ease; /* Loader transition */
+      color: var(--text-primary);
     }
 
     .terminal-loader p,
@@ -67,13 +211,13 @@
     .progress-line {
       width: 256px;
       height: 2px;
-      background: #374151;
+      background: var(--loader-line-bg);
       margin: 1rem 0;
     }
 
     .progress {
       height: 2px;
-      background: #34d399;
+      background: var(--loader-progress-bg);
       width: 0%;
     }
 
@@ -91,13 +235,14 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       backdrop-filter: blur(10px);
-      background: rgba(0,0,0,0.3);
+      background: var(--nav-bg);
       z-index: 10;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1rem 1.5rem;
       transition: transform 0.3s ease-out; /* Add transition for smooth hide/show */
+      border-bottom: 1px solid var(--nav-border);
     }
 
     .nav-logo {
@@ -106,7 +251,7 @@
       gap: 0.75rem;
       font-size: 1.5rem;
       font-weight: bold;
-      color: white;
+      color: var(--text-primary);
       text-decoration: none;
     }
 
@@ -120,7 +265,7 @@
       display: none;
       font-size: 1.5rem;
       background: none;
-      color: #34d399;
+      color: var(--accent-color);
       border: none;
       cursor: pointer;
     }
@@ -128,17 +273,32 @@
     .nav-links {
       display: flex;
       gap: 1.5rem;
+      align-items: center; /* Align items for toggle button */
     }
 
     .nav-links a {
-      color: white;
+      color: var(--text-primary);
       text-decoration: none;
       font-weight: bold;
       transition: color 0.3s ease;
     }
 
     .nav-links a:hover {
-      color: #34d399;
+      color: var(--accent-color);
+    }
+
+    .theme-toggle-button {
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-left: 1rem; /* Space from last nav link */
+      transition: color 0.3s ease;
+    }
+
+    .theme-toggle-button:hover {
+      color: var(--accent-color);
     }
 
     @media (max-width: 768px) {
@@ -149,16 +309,22 @@
         width: 100%;
         display: none;
         flex-direction: column;
-        background: #1f2937cc;
+        background: var(--nav-bg); /* Use variable for mobile menu background */
         padding: 1rem;
         backdrop-filter: blur(5px);
         z-index: 999;
+        border-top: 1px solid var(--nav-border);
+        align-items: flex-start; /* Align items for mobile menu */
       }
       .nav-links.active {
         display: flex;
       }
       .menu-button {
         display: block;
+      }
+      .theme-toggle-button {
+        margin-left: 0; /* Remove left margin in mobile view */
+        margin-top: 0.5rem; /* Add top margin for spacing */
       }
     }
 
@@ -169,16 +335,17 @@
       right: 1rem;
       width: 40px;
       height: 40px;
-      background: rgba(52,211,153,0.3);
+      background: var(--accent-color);
       border: none;
       border-radius: 50%;
-      color: #34d399;
+      color: var(--button-text);
       font-size: 1.25rem;
       display: none;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       z-index: 999;
+      box-shadow: 0 2px 5px var(--card-shadow);
     }
 
     #backToTop.show {
@@ -188,9 +355,11 @@
     /* Sections */
     .section {
       padding: 4rem 2rem;
-      background-color: #111b2e;
+      background-color: var(--bg-secondary);
       position: relative;
       z-index: 1;
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .hero {
@@ -207,19 +376,19 @@
 
     .glow-title {
       font-size: 2.5rem;
-      color: white;
-      opacity: 0.6;
+      color: var(--text-primary);
+      opacity: 0.8;
       animation: dimGlow 3s ease-in-out infinite;
     }
 
     @keyframes dimGlow {
-      0%, 100% { opacity: 0.6; }
+      0%, 100% { opacity: 0.8; }
       50% { opacity: 1; }
     }
 
     .typing {
       font-size: 2rem;
-      color: #34d399;
+      color: var(--accent-color);
       margin-bottom: 1rem;
     }
 
@@ -229,35 +398,36 @@
     }
 
     .name {
-      font-size: 1.25rem; /* Reverted size */
-      color: #86efac;
+      font-size: 1.25rem;
+      color: var(--text-secondary);
       margin: 1rem 0;
-      /* Removed font-weight: bold; and text-shadow */
     }
 
     .centered-button {
       text-align: center;
       margin-top: 2rem;
-      display: flex; /* Use flexbox for button alignment */
-      gap: 1rem; /* Space between buttons */
-      justify-content: center; /* Center buttons horizontally */
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
     }
 
-    .btn-contact, .btn-cv { /* Added .btn-cv style */
-      background: #34d399;
-      color: black;
+    .btn-contact, .btn-cv {
+      background: var(--accent-color);
+      color: var(--button-text);
       padding: 0.75rem 1.5rem;
       border: none;
       border-radius: 0.375rem;
       cursor: pointer;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
       font-weight: bold;
       text-decoration: none;
       display: inline-block;
+      box-shadow: 0 2px 5px var(--card-shadow);
     }
 
-    .btn-contact:hover, .btn-cv:hover { /* Added .btn-cv hover style */
+    .btn-contact:hover, .btn-cv:hover {
       transform: scale(1.05);
+      background: var(--accent-hover);
     }
 
     /* About Me */
@@ -282,14 +452,15 @@
     }
 
     .about-pic {
-      background: #1f2937;
-      width: 100%; /* Changed to 100% to scale with parent */
-      /* Removed max-width to allow fluid scaling */
+      background: var(--profile-pic-bg);
+      width: 100%;
       aspect-ratio: 1 / 1;
       border-radius: 0.5rem;
       background-image: url("assets/images/profile.png");
       background-size: cover;
       background-position: center;
+      box-shadow: 0 2px 5px var(--card-shadow);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
     /* Skills */
@@ -309,33 +480,34 @@
 
     .skill-name {
       font-size: 1.1rem;
-      color: white;
+      color: var(--text-primary);
       display: block;
       margin-bottom: 0.25rem;
       transition: color 0.3s ease;
     }
 
     .skill-name:hover {
-      color: #34d399;
-      text-shadow: 0 0 5px #34d399aa;
+      color: var(--accent-color);
+      text-shadow: var(--about-text-glow);
     }
 
     .skills-bar {
-      background: #374151;
+      background: var(--border-color);
       height: 0.5rem;
       border-radius: 9999px;
       overflow: hidden;
+      transition: background 0.3s ease;
     }
 
     .skills-bar-inner {
       height: 100%;
-      background: #34d399;
+      background: var(--accent-color);
       width: 0%;
-      transition: width 1s ease;
+      transition: width 1s ease, background 0.3s ease;
     }
 
     .skill-percent {
-      color: #34d399;
+      color: var(--accent-color);
       font-size: 0.875rem;
       font-weight: bold;
       display: inline-block;
@@ -352,15 +524,23 @@
     }
 
     .tools-list span {
-      background: #374151;
+      background: var(--border-color);
+      color: var(--text-primary);
       padding: 0.5rem 1rem;
       border-radius: 999px;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, color 0.3s ease;
+      /* Added for hover effect */
+      border: 1px solid transparent;
+      box-shadow: 0 2px 5px var(--card-shadow);
     }
 
     .tools-list span:hover {
-      background: #34d399;
-      color: black;
+      background: var(--accent-color);
+      color: var(--button-text);
+      /* Added for hover effect */
+      border: 1px solid var(--accent-color);
+      box-shadow: 0 5px 15px var(--project-card-shadow-hover);
+      transform: translateY(-2px); /* Slight lift on hover */
     }
 
     /* Certifications */
@@ -372,19 +552,27 @@
     }
 
     .cert-card {
-      background: #1f2937;
+      background: var(--bg-secondary);
       padding: 1rem;
       border-radius: 0.5rem;
       text-align: center;
       font-family: monospace;
       font-weight: bold;
       font-size: 1.25rem;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 2px 5px var(--card-shadow);
+      color: var(--text-primary);
+      /* Added for hover effect */
+      border: 1px solid transparent;
     }
 
     .cert-card:hover {
-      background: #34d399;
-      color: black;
+      background: var(--accent-color);
+      color: var(--button-text);
+      /* Added for hover effect */
+      border: 1px solid var(--accent-color);
+      box-shadow: 0 5px 15px var(--project-card-shadow-hover);
+      transform: translateY(-5px);
     }
 
     /* Projects */
@@ -399,19 +587,19 @@
     }
 
     .project-card {
-      background: #111827; /* Reverted to original background */
+      background: var(--bg-secondary);
       padding: 1.5rem;
-      border-radius: 0.5rem; /* Reverted to original border-radius */
+      border-radius: 0.5rem;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 10px #34d39944; /* Reverted to original shadow */
-      border: none; /* Ensure no initial border */
+      transition: all 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 5px var(--card-shadow);
+      border: 1px solid var(--project-card-border);
     }
 
     .project-card:hover {
-      border: 1px solid #34d399;
-      box-shadow: 0 0 10px #34d399aa;
-      transform: translateY(-5px); /* Reverted to original lift effect */
+      border: 1px solid var(--accent-color);
+      box-shadow: 0 5px 15px var(--project-card-shadow-hover);
+      transform: translateY(-5px);
     }
 
     .project-card img {
@@ -424,17 +612,17 @@
 
     .project-card h3 {
       margin: 0.5rem 0;
-      color: white; /* Reverted to white title color */
+      color: var(--text-primary);
     }
 
     .project-card p {
       font-size: 0.875rem;
-      color: #9ca3af; /* Reverted to original description color */
+      color: var(--text-secondary);
       margin: 0.5rem 0;
     }
 
     .project-card .github-link {
-      color: #34d399; /* Reverted to original link color */
+      color: var(--accent-color);
       display: block;
       margin-top: 0.5rem;
       text-decoration: none;
@@ -442,7 +630,7 @@
     }
 
     .project-card .github-link:hover {
-      color: #86efac; /* Reverted to original link hover color */
+      color: var(--accent-hover);
       text-decoration: underline;
     }
 
@@ -455,32 +643,33 @@
     }
 
     .blog-post-card {
-      background: #111827;
+      background: var(--bg-secondary);
       padding: 1.5rem;
       border-radius: 0.5rem;
-      box-shadow: 0 0 10px rgba(52,211,153,0.2);
-      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px var(--card-shadow);
+      transition: all 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid var(--project-card-border);
     }
 
     .blog-post-card:hover {
-      border: 1px solid #34d399;
-      box-shadow: 0 0 10px #34d399aa;
+      border: 1px solid var(--accent-color);
+      box-shadow: 0 5px 15px var(--project-card-shadow-hover);
       transform: translateY(-5px);
     }
 
     .blog-post-card h3 {
-      color: #34d399;
+      color: var(--accent-color);
       margin-bottom: 0.5rem;
     }
 
     .blog-post-card p {
       font-size: 0.9rem;
-      color: #9ca3af;
+      color: var(--text-secondary);
       margin-bottom: 1rem;
     }
 
     .blog-post-card .read-more {
-      color: #86efac;
+      color: var(--accent-hover);
       text-decoration: none;
       font-weight: bold;
       display: inline-block;
@@ -496,7 +685,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.9); /* Reverted to original background opacity */
+      background: var(--modal-overlay-bg);
       z-index: 9999;
       align-items: center;
       justify-content: center;
@@ -507,55 +696,55 @@
     }
 
     .modal-card {
-      background: #1f2937; /* Reverted to original background */
-      padding: 2rem; /* Reverted to original padding */
-      border-radius: 0.75rem; /* Reverted to original border-radius */
-      max-width: 70vw; /* Reverted to original max-width */
+      background: var(--bg-secondary);
+      padding: 2rem;
+      border-radius: 0.75rem;
+      max-width: 70vw;
       width: 70vw;
       text-align: center;
       position: relative;
-      box-shadow: 0 0 10px #34d39944; /* Reverted to original shadow */
-      border: none; /* Ensure no initial border */
-      animation: none; /* Removed fade-in animation */
+      box-shadow: 0 5px 15px var(--card-shadow);
+      border: none;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
 
     .modal-card img {
       width: 100%;
-      max-height: 200px; /* Reverted to original max-height */
+      max-height: 200px;
       object-fit: cover;
       border-radius: 0.5rem;
-      margin-bottom: 1rem; /* Reverted to original margin-bottom */
+      margin-bottom: 1rem;
     }
 
     .modal-card .title {
-      color: #34d399; /* Reverted to original title color */
-      font-size: 1.5rem; /* Reverted to original font-size */
+      color: var(--accent-color);
+      font-size: 1.5rem;
       font-weight: bold;
-      margin-bottom: 0.5rem; /* Adjusted margin for consistency */
+      margin-bottom: 0.5rem;
     }
 
     .modal-card .description {
       margin-top: 1rem;
-      color: #9ca3af; /* Reverted to original description color */
-      font-size: 0.875rem; /* Reverted to original font-size */
-      line-height: normal; /* Reverted to normal line-height */
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      line-height: normal;
     }
 
     .modal-card .github-link {
-      color: #34d399; /* Reverted to original link color */
-      display: block; /* Reverted to original display */
-      margin-top: 1rem; /* Reverted to original margin-top */
+      color: var(--accent-color);
+      display: block;
+      margin-top: 1rem;
       text-decoration: none;
       font-weight: bold;
-      padding: 0; /* Removed padding */
-      border: none; /* Removed border */
-      border-radius: 0; /* Removed border-radius */
+      padding: 0;
+      border: none;
+      border-radius: 0;
     }
 
     .modal-card .github-link:hover {
-      background-color: transparent; /* Reverted background-color on hover */
-      color: #86efac; /* Reverted to original hover color */
-      border-color: transparent; /* Reverted border-color on hover */
+      background-color: transparent;
+      color: var(--accent-hover);
+      border-color: transparent;
       text-decoration: underline;
     }
 
@@ -563,18 +752,18 @@
       position: absolute;
       top: 1rem;
       right: 1rem;
-      font-size: 1.5rem; /* Reverted to original font-size */
+      font-size: 1.5rem;
       cursor: pointer;
-      color: #34d399; /* Reverted to original color */
+      color: var(--text-primary);
       background: none;
       border: none;
-      padding: 0; /* Removed padding */
-      border-radius: 0; /* Removed border-radius */
+      padding: 0;
+      border-radius: 0;
     }
 
     .modal-card .close-btn:hover {
-      background-color: transparent; /* Reverted background-color on hover */
-      color: #86efac; /* Reverted to original hover color */
+      background-color: transparent;
+      color: var(--accent-color);
     }
 
     /* Contact Section */
@@ -608,24 +797,24 @@
     .contact-form input,
     .contact-form textarea {
       padding: 0.75rem;
-      background: #1f2937;
-      border: 1px solid #34d399;
-      color: white;
+      background: var(--form-field-bg);
+      border: 1px solid var(--form-field-border);
+      color: var(--text-primary);
       border-radius: 0.375rem;
       outline: none;
-      transition: box-shadow 0.3s ease;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
       max-width: 100%;
     }
 
     .contact-form input:focus,
     .contact-form textarea:focus {
-      box-shadow: 0 0 10px #34d399aa;
-      border-color: #34d399;
+      box-shadow: 0 0 10px var(--form-field-focus-shadow);
+      border-color: var(--accent-color);
     }
 
     .contact-form label {
       display: block;
-      color: #34d399;
+      color: var(--accent-color);
       font-size: 0.75rem;
       text-transform: uppercase;
       margin-top: 1rem;
@@ -638,13 +827,13 @@
     }
 
     .contact-col .social-icons a {
-      color: #34d399;
+      color: var(--accent-color);
       font-size: 1.5rem;
       transition: color 0.3s ease;
     }
 
     .contact-col .social-icons a:hover {
-      color: #86efac;
+      color: var(--accent-hover);
     }
 
     @media (max-width: 768px) {
@@ -663,12 +852,14 @@
     footer {
       text-align: center;
       padding: 1.5rem;
-      background: #0a0e17;
+      background: var(--footer-bg);
+      border-top: 1px solid var(--footer-border);
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     footer p::before {
       content: "© Ajoyag 2025 Portfolio";
-      color: #9ca3af;
+      color: var(--text-secondary);
       font-size: 0.875rem;
     }
 
@@ -681,7 +872,7 @@
     /* Typing Animation Fix */
     .typing {
       font-size: 2rem;
-      color: #34d399;
+      color: var(--accent-color);
       margin-bottom: 1rem;
     }
 
@@ -697,7 +888,7 @@
     }
 
     .skills-bar {
-      background: #374151;
+      background: var(--border-color);
       height: 0.5rem;
       border-radius: 9999px;
       overflow: hidden;
@@ -705,14 +896,14 @@
     }
 
     .skills-bar-inner {
-      background: #34d399;
+      background: var(--accent-color);
       height: 100%;
       width: 0%;
       transition: width 1s ease;
     }
 
     .skill-percent {
-      color: #34d399;
+      color: var(--accent-color);
       font-size: 0.875rem;
       font-weight: bold;
       margin-top: 0.25rem;
@@ -725,13 +916,13 @@
     }
 
     .hover-only-on-hover:hover {
-      border: 1px solid #34d399;
-      box-shadow: 0 0 10px #34d399aa;
+      border: 1px solid var(--accent-color);
+      box-shadow: 0 5px 15px var(--project-card-shadow-hover);
     }
 
     .hover-only-on-hover:active {
-      border: 1px solid #34d399;
-      box-shadow: 0 0 10px #34d39944;
+      border: 1px solid var(--accent-color);
+      box-shadow: 0 2px 5px var(--card-shadow);
     }
 
     .no-touch-hover {
@@ -741,14 +932,10 @@
 
     .no-touch-hover:hover {
       /* Removed border and box-shadow for skill bars on hover */
-      /* border: 1px solid #34d399; */
-      /* box-shadow: 0 0 10px #34d39944; */
     }
 
     .no-touch-hover:active {
       /* Removed border and box-shadow for skill bars on active */
-      /* border: 1px solid #34d399; */
-      /* box-shadow: 0 0 10px #34d39944; */
     }
 
     /* Section Titles Centered */
@@ -757,8 +944,10 @@
       font-weight: bold;
       text-align: center;
       margin-bottom: 2rem;
-      border-bottom: 1px solid #34d399;
+      border-bottom: 1px solid var(--border-color);
       padding-bottom: 0.5rem;
+      color: var(--text-primary);
+      transition: color 0.3s ease, border-color 0.3s ease;
     }
 
     /* Responsive Fixes */
@@ -774,13 +963,13 @@
 
     /* Modal GitHub Link Color */
     .modal-card .github-link {
-      color: #34d399;
+      color: var(--accent-color);
       display: block;
       margin-top: 1rem;
     }
 
     .modal-card .github-link:hover {
-      color: #86efac;
+      color: var(--accent-hover);
     }
 
     /* Smooth Scroll Behavior */
@@ -789,9 +978,9 @@
     }
   </style>
 </head>
-<body class="dark-mode" id="app">
+<body id="app">
   <!-- Background Effect -->
-  <div class="bg-effect"></div>
+  <div class="bg-effect" id="bgEffect"></div>
 
   <!-- Terminal Loader Start -->
   <div id="preloader">
@@ -821,6 +1010,9 @@
       <a href="#projects">Projects</a>
       <a href="#blog">Blog</a> <!-- New Blog Link -->
       <a href="#contact">Contact</a>
+      <button id="themeToggle" class="theme-toggle-button">
+        <i class="fas fa-moon"></i> <!-- Default to moon icon for dark mode -->
+      </button>
     </nav>
   </header>
   <!-- Navigation End -->
@@ -832,11 +1024,11 @@
   <!-- Hero Section Start -->
   <section class="hero" id="home">
     <h1 class="glow-title">Defending the Digital Frontier</h1>
-    <div class="name">Ajoy A G</div>
+    <div class="name">Ajoyag</div>
     <div class="typing" id="typingText"><span>|</span></div>
     <div class="centered-button">
       <a href="#contact" class="btn-contact">Contact Me</a>
-      <a href="assets/documents/Resume.pdf" download="ajoyag_resume.pdf" class="btn-cv">View CV</a>
+      <a href="assets/documents/resume.pdf" download="Ajoyag_Resume.pdf" class="btn-cv">View CV</a>
     </div>
   </section>
   <!-- Hero Section End -->
@@ -850,7 +1042,7 @@
     <div class="container about-grid">
       <div class="about-text">
         <h2 class="section-title">About Me</h2>
-        <p>I’m a cybersecurity enthusiast with a strong interest in ethical hacking, red teaming, and security research. What began as curiosity has grown into a focused effort to understand how systems work, where they break, and how to secure them.</p>
+        <p>I’m a cybersecurity enthusiast with a strong interest in ethical hacking, red teaming, and security research. What began as curiosity has韧性 has grown into a focused effort to understand how systems work, where they break, and how to secure them.</p>
         <p>Currently working as an InfoSec Intern at TEPL Hosur, I’m gaining hands-on experience through Capture The Flag competitions, bug bounty programs, and continuous research into real-world vulnerabilities.</p>
         <p>With a background in Mechatronics, I bring a unique perspective to the field—especially in areas like hardware, embedded systems, and OT/IoT/IIoT security, where the digital meets the physical.</p>
         <p>Alongside security, I’ve also explored creative problem-solving as a No-Code Web Developer—translating ideas into live projects by guiding AI tools with clear direction and intent.</p>
@@ -993,46 +1185,138 @@
 
   <!-- Scripts Start -->
   <script type="text/javascript">
-    // Terminal loader
-    let progress = 0;
-    const loadingBar = document.querySelector("#loadingBar");
-    const percentEl = document.getElementById("loadingPercent");
-    const accessEl = document.getElementById("accessGranted");
-    const preloader = document.getElementById("preloader");
+    // Theme Toggle Logic
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
 
-    const FAST_LOAD_THRESHOLD_MS = 3 * 60 * 1000; // 3 minutes in milliseconds
-    let loaderSpeed = 50; // Default speed for progress update interval
-
-    const lastVisitTime = localStorage.getItem('lastVisitTime');
-    if (lastVisitTime) {
-      const timeElapsed = Date.now() - parseInt(lastVisitTime);
-      if (timeElapsed < FAST_LOAD_THRESHOLD_MS) {
-        loaderSpeed = 10; // Faster speed if within 3 minutes
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        body.classList.add('dark-mode');
+        themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>'; // Sun icon for dark mode
       } else {
-        localStorage.removeItem('lastVisitTime'); // Clear if outside the window
+        body.classList.remove('dark-mode');
+        themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>'; // Moon icon for light mode
       }
     }
 
-    const loaderInterval = setInterval(() => {
-      progress += 2;
-      loadingBar.style.width = progress + "%";
-      percentEl.textContent = progress;
-
-      if (progress >= 100) {
-        clearInterval(loaderInterval);
-        accessEl.classList.add("loaded");
-
-        // Smooth fade out
-        preloader.style.opacity = "0";
-
-        setTimeout(() => {
-          preloader.style.display = "none";
-          document.body.style.overflow = "auto";
-          window.location.hash = "home"; // Scrolls to Home section smoothly
-          localStorage.setItem('lastVisitTime', Date.now()); // Store timestamp after preloader finishes
-        }, 500); // Match CSS transition duration
+    // Load saved theme or default to dark
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      applyTheme(savedTheme);
+    } else {
+      // Default to dark mode if no preference is saved
+      applyTheme('dark');
     }
-    }, loaderSpeed); // Use dynamic loaderSpeed
+
+    themeToggleBtn.addEventListener('click', () => {
+      if (body.classList.contains('dark-mode')) {
+        applyTheme('light');
+        localStorage.setItem('theme', 'light');
+      } else {
+        applyTheme('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+
+    // Terminal loader
+    const preloader = document.getElementById("preloader");
+    const loadingBar = document.querySelector("#loadingBar");
+    const percentEl = document.getElementById("loadingPercent");
+    const accessEl = document.getElementById("accessGranted");
+
+    const FAST_LOAD_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+    // Check if the page was refreshed (using performance.navigation.type)
+    // and if the last visit was within the threshold.
+    const isPageRefreshed = performance.navigation.type === performance.navigation.TYPE_RELOAD;
+    const lastVisitTime = localStorage.getItem('lastVisitTime');
+    const timeElapsed = Date.now() - parseInt(lastVisitTime || 0); // Handle first visit
+
+    if (isPageRefreshed && lastVisitTime && timeElapsed < FAST_LOAD_THRESHOLD_MS) {
+      // If refreshed within 5 minutes, hide loader instantly
+      preloader.style.display = "none";
+      document.body.style.overflow = "auto";
+      window.location.hash = "home"; // Scrolls to Home section smoothly
+    } else {
+      // Otherwise, run the loader animation
+      let progress = 0;
+      const loaderInterval = setInterval(() => {
+        progress += 2;
+        loadingBar.style.width = progress + "%";
+        percentEl.textContent = progress;
+
+        if (progress >= 100) {
+          clearInterval(loaderInterval);
+          accessEl.classList.add("loaded");
+
+          // Smooth fade out
+          preloader.style.opacity = "0";
+
+          setTimeout(() => {
+            preloader.style.display = "none";
+            document.body.style.overflow = "auto";
+            window.location.hash = "home"; // Scrolls to Home section smoothly
+          }, 500); // Match CSS transition duration
+        }
+      }, 50); // Standard speed for full load
+    }
+    // Always update lastVisitTime when the page loads
+    localStorage.setItem('lastVisitTime', Date.now());
+
+    // Clear lastVisitTime from localStorage when the user closes the tab/browser
+    // This ensures the loader appears on a new session (not just a refresh)
+    window.addEventListener('beforeunload', () => {
+        localStorage.removeItem('lastVisitTime');
+    });
+
+
+    // Dynamic Background Pattern
+    const allPatterns = [
+      "bg-pattern-1", "bg-pattern-2", "bg-pattern-3", "bg-pattern-4", "bg-pattern-5",
+      "bg-pattern-6", "bg-pattern-7", "bg-pattern-8", "bg-pattern-9", "bg-pattern-10",
+      "bg-pattern-11", "bg-pattern-12", "bg-pattern-13", "bg-pattern-14", "bg-pattern-15",
+      "bg-pattern-16", "bg-pattern-17", "bg-pattern-18", "bg-pattern-19", "bg-pattern-20"
+    ];
+    let availablePatterns = [];
+    let usedPatterns = [];
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const bgEffect = document.getElementById("bgEffect");
+
+      // Initialize available patterns
+      availablePatterns = [...allPatterns]; // Copy all patterns
+      shuffleArray(availablePatterns); // Shuffle them initially
+
+      function getNextPattern() {
+        if (availablePatterns.length === 0) {
+          // If all patterns have been used, reset and shuffle the used patterns
+          availablePatterns = [...usedPatterns];
+          shuffleArray(availablePatterns);
+          usedPatterns = [];
+        }
+
+        // Get a random index from available patterns
+        const randomIndex = Math.floor(Math.random() * availablePatterns.length);
+        const selectedPattern = availablePatterns[randomIndex];
+
+        // Remove the selected pattern from available and add to used
+        availablePatterns.splice(randomIndex, 1);
+        usedPatterns.push(selectedPattern);
+
+        return selectedPattern;
+      }
+
+      // Apply the initial pattern
+      const initialPattern = getNextPattern();
+      bgEffect.classList.add(initialPattern);
+    });
 
     // Typing Animation
     const typingText = ["Ethical Hacker", "Security Analyst", "Penetration Tester"];
@@ -1125,6 +1409,7 @@
     toolsData.forEach(tool => {
       const span = document.createElement("span");
       span.textContent = tool;
+      span.classList.add("hover-only-on-hover"); // Add hover class
       toolsList.appendChild(span);
     });
 
@@ -1132,7 +1417,7 @@
     const certGrid = document.getElementById("certGrid");
     certificationsData.forEach(cert => {
       const div = document.createElement("div");
-      div.className = "cert-card no-touch-hover";
+      div.className = "cert-card hover-only-on-hover"; // Changed class for hover effect
       div.textContent = cert;
       certGrid.appendChild(div);
     });
@@ -1184,10 +1469,13 @@
     document.addEventListener("click", (e) => {
       const navLinks = document.getElementById("navLinks");
       const nav = document.querySelector(".nav");
+      // Ensure click on theme toggle doesn't close menu
       if (
         navLinks.classList.contains("active") &&
         !nav.contains(e.target) &&
-        e.target !== document.querySelector('.menu-button') // Prevent closing when clicking menu button
+        e.target !== document.querySelector('.menu-button') &&
+        e.target !== themeToggleBtn &&
+        !themeToggleBtn.contains(e.target)
       ) {
         navLinks.classList.remove("active");
       }
