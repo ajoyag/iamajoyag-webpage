@@ -219,7 +219,41 @@
     <header class="sticky top-0 z-50 header-bg backdrop-blur-md border-b shadow-lg">
       <div class="container mx-auto px-4 py-4 flex items-center justify-between">
         <a href="#" class="text-xl md:text-2xl font-bold text-primary">AJOYAG</a>
-        <!-- Navigation removed as per request, only logo remains -->
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex space-x-6 text-sm">
+          <a href="#" class="hover:text-primary transition-colors">Blog</a>
+          <a href="index.html" class="hover:text-primary transition-colors">Know Me?</a>
+          <button id="darkModeToggle" data-toggle-dark class="p-2 rounded hover:bg-[rgba(var(--primary-color-rgb),0.2)] transition-colors">
+            <svg id="darkModeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </button>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuButton" class="md:hidden p-2">
+          <svg id="menuOpenIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="menuCloseIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="hidden md:hidden header-bg border-t">
+        <div class="container mx-auto px-4 py-3 space-y-3">
+          <a href="#" class="block py-2 hover:text-primary transition-colors">Blog</a>
+          <a href="index.html" class="block py-2 hover:text-primary transition-colors">Know Me?</a>
+          <button id="darkModeMobileToggle" data-toggle-dark class="flex items-center w-full py-2 hover:text-primary transition-colors">
+            <svg id="darkModeMobileIcon" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            Toggle Dark Mode
+          </button>
+        </div>
       </div>
     </header>
 
@@ -453,14 +487,35 @@
         renderPosts(filtered);
       });
 
-      // Dark Mode Application (no toggle button)
+      // Dark Mode Toggle
+      document.querySelectorAll("[data-toggle-dark]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const isDark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", isDark);
+          localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+        });
+      });
+
+      // Always start in dark mode
       window.addEventListener("DOMContentLoaded", () => {
-        const savedMode = localStorage.getItem("darkMode");
-        if (savedMode === "enabled") {
-          document.documentElement.classList.add("dark");
-        }
+        // Force dark mode on load
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("darkMode", "enabled");
+
         // Initial particle color update based on loaded theme
         drawBackground();
+
+        // Mobile menu toggle logic
+        const mobileMenu = document.getElementById("mobileMenu");
+        const mobileMenuButton = document.getElementById("mobileMenuButton");
+        const menuOpenIcon = document.getElementById("menuOpenIcon");
+        const menuCloseIcon = document.getElementById("menuCloseIcon");
+
+        mobileMenuButton.addEventListener("click", () => {
+          mobileMenu.classList.toggle("hidden");
+          menuOpenIcon.classList.toggle("hidden");
+          menuCloseIcon.classList.toggle("hidden");
+        });
       });
 
       // Back to top button
