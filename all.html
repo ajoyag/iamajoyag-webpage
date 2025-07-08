@@ -12,13 +12,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
+      /* Default (Light Mode) Variables */
       :root {
+        --primary-color: #006400; /* Darker green for light mode */
+        --secondary-color: #00aaff; /* A blueish secondary for light mode */
+        --bg-color: #ffffff;
+        --text-color: #222222;
+        --card-bg: #f9f9f9;
+        --border-color: #e0e0e0;
+        --header-bg: rgba(255, 255, 255, 0.7); /* More translucent for light mode */
+        --header-border: rgba(0, 100, 0, 0.2);
+        --scroll-gradient-start: #006400;
+        --scroll-gradient-end: #00aaff;
+        --button-hover-bg: #006400;
+        --button-hover-text: #ffffff;
+        --input-border: #cccccc;
+        --input-focus-ring: #00aaff;
+        --placeholder-color: #666666;
+        --back-to-top-bg: rgba(0, 100, 0, 0.3);
+        --back-to-top-hover-bg: #006400;
+        --back-to-top-text: #ffffff;
+        --primary-color-rgb: 0, 100, 0; /* For rgba usage */
+      }
+
+      /* Dark Mode Overrides */
+      html.dark {
         --primary-color: #0f0;
         --secondary-color: #0ff;
         --bg-color: #000;
         --text-color: #0f0;
         --card-bg: #111;
-        --font-family: 'Fira Code', monospace;
+        --border-color: #0a0a0a;
+        --header-bg: rgba(0, 0, 0, 0.7); /* More translucent for dark mode */
+        --header-border: rgba(0, 255, 0, 0.2);
+        --scroll-gradient-start: #0f0;
+        --scroll-gradient-end: #0ff;
+        --button-hover-bg: #0f0;
+        --button-hover-text: #000;
+        --input-border: #008000;
+        --input-focus-ring: #00ffff;
+        --placeholder-color: #00cc00;
+        --back-to-top-bg: rgba(0, 255, 0, 0.3);
+        --back-to-top-hover-bg: #008000;
+        --back-to-top-text: #000;
+        --primary-color-rgb: 0, 255, 0; /* For rgba usage */
       }
 
       body {
@@ -27,6 +64,7 @@
         color: var(--text-color);
         margin: 0;
         overflow-x: hidden;
+        transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transition */
       }
 
       .background-canvas {
@@ -49,7 +87,7 @@
       }
 
       h1, h2, h3 {
-        color: var(--primary-color);
+        color: var(--primary-color); /* Apply primary color to headings */
       }
 
       .hover\:glow:hover {
@@ -61,7 +99,7 @@
         top: 0;
         left: 0;
         height: 3px;
-        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        background: linear-gradient(to right, var(--scroll-gradient-start), var(--scroll-gradient-end));
         width: 0%;
         z-index: 50;
         transition: width 0.2s ease-out;
@@ -73,6 +111,102 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
+
+      /* Custom styles applying theme variables */
+      .header-bg {
+        background-color: var(--header-bg);
+        border-bottom-color: var(--header-border);
+      }
+
+      .hero-button {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+      .hero-button:hover {
+        background-color: var(--button-hover-bg);
+        color: var(--button-hover-text);
+      }
+
+      .blog-card {
+        border-color: var(--border-color);
+        background-color: var(--card-bg);
+      }
+      .blog-card h3 {
+        color: var(--primary-color);
+      }
+      .blog-card h3:hover {
+        color: var(--secondary-color);
+      }
+      .blog-card .meta-text { /* For date/read time and tags */
+        color: var(--primary-color);
+      }
+      .blog-card .summary-text { /* For summary */
+        color: var(--text-color);
+      }
+      .blog-card .read-more-button { /* Read More button */
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+      .blog-card .read-more-button:hover {
+        background-color: var(--button-hover-bg);
+        color: var(--button-hover-text);
+      }
+
+      .search-input {
+        background-color: var(--card-bg);
+        color: var(--text-color);
+        border-color: var(--input-border);
+      }
+      .search-input::placeholder {
+        color: var(--placeholder-color);
+      }
+      .search-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--input-focus-ring);
+      }
+      .search-icon {
+        color: var(--primary-color);
+      }
+
+      .footer-bg {
+        background-color: var(--card-bg); /* Using card-bg for footer */
+        color: var(--text-color);
+        border-top-color: var(--border-color);
+      }
+
+      .back-to-top-button {
+        background-color: var(--back-to-top-bg);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+      .back-to-top-button:hover {
+        background-color: var(--back-to-top-hover-bg);
+        color: var(--back-to-top-text);
+      }
+
+      /* Pagination styles */
+      .pagination-button {
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+        background-color: transparent;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      .pagination-button:hover {
+        background-color: var(--button-hover-bg);
+        color: var(--button-hover-text);
+      }
+      .pagination-button.active {
+        background-color: var(--primary-color);
+        color: var(--button-hover-text);
+        font-weight: bold;
+      }
+      .pagination-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
     </style>
   </head>
   <body class="relative">
@@ -83,16 +217,16 @@
     <div id="scrollProgress" class="scroll-progress"></div>
 
     <!-- Header -->
-    <header class="sticky top-0 z-50 bg-[var(--bg-color)]/90 backdrop-blur-md border-b border-green-900/20 shadow-lg">
+    <header class="sticky top-0 z-50 header-bg backdrop-blur-md border-b shadow-lg">
       <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="index.html" class="text-xl md:text-2xl font-bold">AJOYAG</a>
+        <a href="index.html" class="text-xl md:text-2xl font-bold text-primary">AJOYAG</a>
 
         <!-- Desktop Nav -->
-        <nav class="hidden md:flex space-x-6 text-sm">
-          <a href="blog.html" class="hover:text-[var(--primary-color)] transition-colors">Blog</a>
-          <a href="index.html" class="hover:text-[var(--primary-color)] transition-colors">Know Me?</a>
-          <a href="#" class="hover:text-[var(--primary-color)] transition-colors font-bold">All Posts</a>
-          <button id="darkModeToggle" data-toggle-dark class="p-2 rounded hover:bg-green-900/20 transition-colors">
+        <nav class="hidden md:flex space-x-6 text-base items-center">
+          <a href="blog.html" class="hover:text-primary transition-colors p-2 rounded hover:bg-[rgba(var(--primary-color-rgb),0.2)]">Blog</a>
+          <a href="index.html" class="hover:text-primary transition-colors p-2 rounded hover:bg-[rgba(var(--primary-color-rgb),0.2)]">Know Me?</a>
+          <a href="#" class="hover:text-primary transition-colors font-bold p-2 rounded hover:bg-[rgba(var(--primary-color-rgb),0.2)]">All Posts</a>
+          <button id="darkModeToggle" data-toggle-dark class="p-2 rounded hover:bg-[rgba(var(--primary-color-rgb),0.2)] transition-colors">
             <svg id="darkModeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
@@ -111,12 +245,12 @@
       </div>
 
       <!-- Mobile Menu -->
-      <div id="mobileMenu" class="hidden md:hidden bg-[var(--bg-color)]/90 border-t border-green-900/20">
+      <div id="mobileMenu" class="hidden md:hidden header-bg border-t">
         <div class="container mx-auto px-4 py-3 space-y-3">
-          <a href="blog.html" class="block py-2 hover:text-[var(--primary-color)] transition-colors">Blog</a>
-          <a href="index.html" class="block py-2 hover:text-[var(--primary-color)] transition-colors">Know Me?</a>
-          <a href="#" class="block py-2 hover:text-[var(--primary-color)] transition-colors font-bold">All Posts</a>
-          <button id="darkModeMobileToggle" data-toggle-dark class="flex items-center w-full py-2 hover:text-[var(--primary-color)] transition-colors">
+          <a href="blog.html" class="block py-2 hover:text-primary transition-colors">Blog</a>
+          <a href="index.html" class="block py-2 hover:text-primary transition-colors">Know Me?</a>
+          <a href="#" class="block py-2 hover:text-primary transition-colors font-bold">All Posts</a>
+          <button id="darkModeMobileToggle" data-toggle-dark class="flex items-center w-full py-2 hover:text-primary transition-colors hover:bg-[rgba(var(--primary-color-rgb),0.2)] rounded">
             <svg id="darkModeMobileIcon" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
@@ -130,7 +264,7 @@
     <section class="pt-20 pb-12 text-center px-4">
       <div class="container mx-auto max-w-3xl">
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">All Posts</h1>
-        <p class="text-lg md:text-xl mb-8 text-green-400">
+        <p class="text-lg md:text-xl mb-8 text-primary">
           Browse all articles published on AJOYAG.
         </p>
       </div>
@@ -146,9 +280,9 @@
               type="text"
               id="searchInput"
               placeholder="Search articles..."
-              class="w-full pl-10 pr-4 py-2 rounded-lg border border-green-800 bg-black text-green-400 focus:outline-none focus:ring-2 focus:ring-green-600"
+              class="w-full pl-10 pr-4 py-2 rounded-lg search-input border focus:ring-2 focus:ring-[var(--input-focus-ring)]"
             />
-            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-800">
+            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 search-icon">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -159,18 +293,23 @@
         <div id="blogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- Blog cards dynamically injected here -->
         </div>
+
+        <!-- Pagination Controls -->
+        <div id="paginationControls" class="flex justify-center items-center space-x-2 mt-12">
+          <!-- Pagination buttons will be injected here by JavaScript -->
+        </div>
       </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 bg-[var(--bg-color)] text-green-500 border-t border-green-900/20">
+    <footer class="py-12 footer-bg border-t">
       <div class="container mx-auto px-4 text-center">
         <p class="text-sm">&copy; 2025 AJOYAG — All rights reserved</p>
       </div>
     </footer>
 
     <!-- Back to Top Button -->
-    <button id="backToTop" class="fixed bottom-6 right-6 p-3 rounded-full shadow-lg bg-green-900/30 text-green-400 hover:bg-green-900 border border-green-800 hidden transition-colors">
+    <button id="backToTop" class="fixed bottom-6 right-6 p-3 rounded-full shadow-lg back-to-top-button border hidden transition-colors">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
       </svg>
@@ -222,6 +361,182 @@
           "author": "NetSentinel",
           "readingTime": "8 min read",
           "url": "blog/post4.html"
+        },
+        {
+          "id": 5,
+          "title": "The Future of Quantum Computing",
+          "summary": "Exploring the potential and challenges of quantum computing.",
+          "tags": ["quantum", "computing", "future tech"],
+          "date": "2025-02-28",
+          "image": "https://picsum.photos/seed/quantum/800/450 ",
+          "author": "Dr. Qubit",
+          "readingTime": "12 min read",
+          "url": "blog/post5.html"
+        },
+        {
+          "id": 6,
+          "title": "Decentralized Web: Web3 Explained",
+          "summary": "A comprehensive guide to Web3 and its underlying technologies.",
+          "tags": ["web3", "blockchain", "decentralization"],
+          "date": "2025-02-25",
+          "image": "https://picsum.photos/seed/web3/800/450 ",
+          "author": "CryptoDev",
+          "readingTime": "11 min read",
+          "url": "blog/post6.html"
+        },
+        {
+          "id": 7,
+          "title": "Cyber Warfare: A New Battlefield",
+          "summary": "Understanding the landscape of state-sponsored cyber attacks.",
+          "tags": ["cybersecurity", "warfare", "geopolitics"],
+          "date": "2025-02-20",
+          "image": "https://picsum.photos/seed/cyberwar/800/450 ",
+          "author": "InfoSec Analyst",
+          "readingTime": "15 min read",
+          "url": "blog/post7.html"
+        },
+        {
+          "id": 8,
+          "title": "Building Secure APIs with Node.js",
+          "summary": "Best practices for developing robust and secure APIs.",
+          "tags": ["Node.js", "API", "security", "development"],
+          "date": "2025-02-18",
+          "image": "https://picsum.photos/seed/nodejs/800/450 ",
+          "author": "API Master",
+          "readingTime": "9 min read",
+          "url": "blog/post8.html"
+        },
+        {
+          "id": 9,
+          "title": "The Rise of Low-Code Development",
+          "summary": "How low-code platforms are changing software development.",
+          "tags": ["low-code", "development", "productivity"],
+          "date": "2025-02-15",
+          "image": "https://picsum.photos/seed/lowcode/800/450 ",
+          "author": "AppBuilder",
+          "readingTime": "7 min read",
+          "url": "blog/post9.html"
+        },
+        {
+          "id": 10,
+          "title": "Data Privacy in the Age of AI",
+          "summary": "Navigating the complexities of data privacy with advanced AI.",
+          "tags": ["data privacy", "AI", "ethics"],
+          "date": "2025-02-12",
+          "image": "https://picsum.photos/seed/dataprivacy/800/450 ",
+          "author": "Privacy Advocate",
+          "readingTime": "10 min read",
+          "url": "blog/post10.html"
+        },
+        {
+          "id": 11,
+          "title": "Understanding Blockchain Consensus",
+          "summary": "A deep dive into different blockchain consensus mechanisms.",
+          "tags": ["blockchain", "cryptocurrency", "consensus"],
+          "date": "2025-02-10",
+          "image": "https://picsum.photos/seed/blockchain/800/450 ",
+          "author": "Decentralized Guru",
+          "readingTime": "13 min read",
+          "url": "blog/post11.html"
+        },
+        {
+          "id": 12,
+          "title": "Edge Computing vs. Cloud Computing",
+          "summary": "Comparing the benefits and drawbacks of edge and cloud architectures.",
+          "tags": ["edge computing", "cloud computing", "infrastructure"],
+          "date": "2025-02-08",
+          "image": "https://picsum.photos/seed/edgecloud/800/450 ",
+          "author": "InfraArchitect",
+          "readingTime": "9 min read",
+          "url": "blog/post12.html"
+        },
+        {
+          "id": 13,
+          "title": "The Evolution of Malware",
+          "summary": "Tracking the history and sophistication of malicious software.",
+          "tags": ["malware", "cybersecurity", "threats"],
+          "date": "2025-02-05",
+          "image": "https://picsum.photos/seed/malware/800/450 ",
+          "author": "ThreatHunter",
+          "readingTime": "11 min read",
+          "url": "blog/post13.html"
+        },
+        {
+          "id": 14,
+          "title": "Getting Started with WebAssembly",
+          "summary": "A beginner's guide to WebAssembly for high-performance web apps.",
+          "tags": ["webassembly", "web development", "performance"],
+          "date": "2025-02-03",
+          "image": "https://picsum.photos/seed/wasm/800/450 ",
+          "author": "WebDev Pro",
+          "readingTime": "8 min read",
+          "url": "blog/post14.html"
+        },
+        {
+          "id": 15,
+          "title": "AI in Healthcare: Opportunities and Risks",
+          "summary": "Examining the impact of AI on medical diagnosis and patient care.",
+          "tags": ["AI", "healthcare", "ethics"],
+          "date": "2025-01-30",
+          "image": "https://picsum.photos/seed/aihealth/800/450 ",
+          "author": "BioTech Innovator",
+          "readingTime": "14 min read",
+          "url": "blog/post15.html"
+        },
+        {
+          "id": 16,
+          "title": "Securing IoT Devices in Smart Homes",
+          "summary": "Tips and best practices for protecting your smart home from cyber threats.",
+          "tags": ["IoT", "security", "smart home"],
+          "date": "2025-01-28",
+          "image": "https://picsum.photos/seed/iotsec/800/450 ",
+          "author": "HomeDefender",
+          "readingTime": "9 min read",
+          "url": "blog/post16.html"
+        },
+        {
+          "id": 17,
+          "title": "The Power of Serverless Functions",
+          "summary": "How serverless computing simplifies deployment and scaling.",
+          "tags": ["serverless", "cloud", "development"],
+          "date": "2025-01-25",
+          "image": "https://picsum.photos/seed/serverless/800/450 ",
+          "author": "CloudArchitect",
+          "readingTime": "10 min read",
+          "url": "blog/post17.html"
+        },
+        {
+          "id": 18,
+          "title": "Demystifying Cryptography",
+          "summary": "An introduction to the principles of modern cryptography.",
+          "tags": ["cryptography", "security", "mathematics"],
+          "date": "2025-01-22",
+          "image": "https://picsum.photos/seed/crypto/800/450 ",
+          "author": "CipherMaster",
+          "readingTime": "12 min read",
+          "url": "blog/post18.html"
+        },
+        {
+          "id": 19,
+          "title": "Containerization with Docker and Kubernetes",
+          "summary": "A guide to deploying and managing applications with containers.",
+          "tags": ["docker", "kubernetes", "devops"],
+          "date": "2025-01-20",
+          "image": "https://picsum.photos/seed/containers/800/450 ",
+          "author": "DevOps Engineer",
+          "readingTime": "14 min read",
+          "url": "blog/post19.html"
+        },
+        {
+          "id": 20,
+          "title": "The Ethics of Autonomous Vehicles",
+          "summary": "Exploring the moral dilemmas and societal impact of self-driving cars.",
+          "tags": ["AI", "ethics", "autonomous vehicles"],
+          "date": "2025-01-18",
+          "image": "https://picsum.photos/seed/auton/800/450 ",
+          "author": "Future Mobility",
+          "readingTime": "11 min read",
+          "url": "blog/post20.html"
         }
       ]
     </script>
@@ -256,7 +571,10 @@
       function drawBackground() {
         ctx.clearRect(0, 0, w, h);
 
-        ctx.fillStyle = 'rgba(0, 255, 0, 0.6)';
+        // Use a theme-aware color for particles
+        const particleColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+        ctx.fillStyle = particleColor.replace('rgb', 'rgba').replace(')', ', 0.6)'); // Add opacity
+
         particles.forEach(p => {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -279,34 +597,44 @@
       const blogData = JSON.parse(document.getElementById("blogData").textContent);
       const blogGrid = document.getElementById("blogGrid");
       const searchInput = document.getElementById("searchInput");
+      const paginationControls = document.getElementById("paginationControls");
 
-      function renderPosts(posts) {
+      const postsPerPage = 9; // Changed from 8 to 9
+      let currentPage = 1;
+      let filteredPosts = []; // Store filtered posts for pagination
+
+      function renderPosts(postsToRender) {
         blogGrid.innerHTML = "";
-        if (!posts.length) {
+        if (!postsToRender.length) {
           blogGrid.innerHTML = `
-            <div class="col-span-full text-center py-16 text-green-500">
+            <div class="col-span-full text-center py-16 text-primary">
               <p class="text-xl">No articles found matching your search.</p>
             </div>`;
           return;
         }
 
-        posts.forEach(post => {
+        // Calculate start and end index for current page
+        const startIndex = (currentPage - 1) * postsPerPage;
+        const endIndex = startIndex + postsPerPage;
+        const paginatedPosts = postsToRender.slice(startIndex, endIndex);
+
+        paginatedPosts.forEach(post => {
           const card = document.createElement("a");
           card.href = post.url;
-          card.className = "overflow-hidden rounded-lg shadow-xl border border-green-900/20 hover:border-green-900 transition-colors";
+          card.className = "overflow-hidden rounded-lg shadow-xl blog-card border hover:border-primary transition-colors";
           card.innerHTML = `
             <div class="relative h-48 overflow-hidden">
               <img src="${post.image}" alt="${post.title}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             </div>
             <div class="p-5">
               <div class="flex flex-wrap gap-2 mb-3">
-                ${post.tags.slice(0, 2).map(tag => `<span class="text-xs px-2 py-1 rounded bg-green-900/30 text-green-400">${tag}</span>`).join("")}
+                ${post.tags.slice(0, 2).map(tag => `<span class="text-xs px-2 py-1 rounded bg-[rgba(var(--primary-color-rgb),0.3)] meta-text">${tag}</span>`).join("")}
               </div>
-              <h3 class="text-lg font-bold mb-2 hover:text-green-300 cursor-pointer line-clamp-2">${post.title}</h3>
-              <p class="mb-4 text-sm">${post.summary.substring(0, 120)}...</p>
-              <div class="flex items-center justify-between text-xs text-green-600">
+              <h3 class="text-lg font-bold mb-2 hover:text-secondary cursor-pointer line-clamp-2">${post.title}</h3>
+              <p class="mb-4 text-sm summary-text">${post.summary.substring(0, 120)}...</p>
+              <div class="flex items-center justify-between text-xs text-text-color">
                 <div class="flex items-center">
-                  <div class="w-4 h-4 rounded-full bg-green-400 mr-2"></div>
+                  <div class="w-4 h-4 rounded-full bg-primary mr-2"></div>
                   <span>${post.author}</span>
                 </div>
                 <div>${new Date(post.date).toLocaleDateString()} • ${post.readingTime}</div>
@@ -315,20 +643,77 @@
           `;
           blogGrid.appendChild(card);
         });
+
+        renderPagination(postsToRender.length);
       }
 
-      // Initial render
-      renderPosts(blogData);
+      function renderPagination(totalPosts) {
+        paginationControls.innerHTML = "";
+        const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+        if (totalPages <= 1) {
+          return; // No pagination needed for 1 or fewer pages
+        }
+
+        // Previous button
+        const prevButton = document.createElement("button");
+        prevButton.textContent = "Previous";
+        prevButton.classList.add("pagination-button");
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener("click", () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderPosts(filteredPosts);
+            window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top on page change
+          }
+        });
+        paginationControls.appendChild(prevButton);
+
+        // Page number buttons
+        for (let i = 1; i <= totalPages; i++) {
+          const pageButton = document.createElement("button");
+          pageButton.textContent = i;
+          pageButton.classList.add("pagination-button");
+          if (i === currentPage) {
+            pageButton.classList.add("active");
+          }
+          pageButton.addEventListener("click", () => {
+            currentPage = i;
+            renderPosts(filteredPosts);
+            window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top on page change
+          });
+          paginationControls.appendChild(pageButton);
+        }
+
+        // Next button
+        const nextButton = document.createElement("button");
+        nextButton.textContent = "Next";
+        nextButton.classList.add("pagination-button");
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener("click", () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderPosts(filteredPosts);
+            window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top on page change
+          }
+        });
+        paginationControls.appendChild(nextButton);
+      }
+
+      // Initial render of posts and pagination
+      filteredPosts = [...blogData]; // Initialize filteredPosts with all data
+      renderPosts(filteredPosts);
 
       // Search filter
       searchInput.addEventListener("input", e => {
         const query = e.target.value.toLowerCase();
-        const filtered = blogData.filter(post =>
+        filteredPosts = blogData.filter(post =>
           post.title.toLowerCase().includes(query) ||
           post.summary.toLowerCase().includes(query) ||
           post.tags.some(tag => tag.toLowerCase().includes(query))
         );
-        renderPosts(filtered);
+        currentPage = 1; // Reset to first page on new search
+        renderPosts(filteredPosts);
       });
 
       // Dark Mode Toggle
@@ -340,23 +725,26 @@
         });
       });
 
+      // Always start in dark mode
       window.addEventListener("DOMContentLoaded", () => {
-        const savedMode = localStorage.getItem("darkMode");
-        if (savedMode === "enabled") {
-          document.documentElement.classList.add("dark");
-        }
-      });
+        // Force dark mode on load
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("darkMode", "enabled");
 
-      // Mobile menu toggle
-      const mobileMenu = document.getElementById("mobileMenu");
-      const mobileMenuButton = document.getElementById("mobileMenuButton");
-      const menuOpenIcon = document.getElementById("menuOpenIcon");
-      const menuCloseIcon = document.getElementById("menuCloseIcon");
+        // Initial particle color update based on loaded theme
+        drawBackground();
 
-      mobileMenuButton.addEventListener("click", () => {
-        mobileMenu.classList.toggle("hidden");
-        menuOpenIcon.classList.toggle("hidden");
-        menuCloseIcon.classList.toggle("hidden");
+        // Mobile menu toggle logic
+        const mobileMenu = document.getElementById("mobileMenu");
+        const mobileMenuButton = document.getElementById("mobileMenuButton");
+        const menuOpenIcon = document.getElementById("menuOpenIcon");
+        const menuCloseIcon = document.getElementById("menuCloseIcon");
+
+        mobileMenuButton.addEventListener("click", () => {
+          mobileMenu.classList.toggle("hidden");
+          menuOpenIcon.classList.toggle("hidden");
+          menuCloseIcon.classList.toggle("hidden");
+        });
       });
 
       // Back to top button
@@ -374,4 +762,3 @@
     </script>
   </body>
 </html>
-
