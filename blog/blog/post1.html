@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ethical Hacking in 2025 - AJOYAG</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com "></script>
+
+    <!-- Google Fonts: Fira Code for terminal look -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+      /* Default (Light Mode) Variables */
+      :root {
+        --primary-color: #006400; /* Darker green for light mode */
+        --secondary-color: #00aaff; /* A blueish secondary for light mode */
+        --bg-color: #ffffff;
+        --text-color: #222222;
+        --card-bg: #f9f9f9;
+        --border-color: #e0e0e0;
+        --header-bg: rgba(255, 255, 255, 0.7); /* More translucent for light mode */
+        --header-border: rgba(0, 100, 0, 0.2);
+        --scroll-gradient-start: #006400;
+        --scroll-gradient-end: #00aaff;
+        --button-hover-bg: #006400;
+        --button-hover-text: #ffffff;
+        --input-border: #cccccc;
+        --input-focus-ring: #00aaff;
+        --placeholder-color: #666666;
+        --back-to-top-bg: rgba(0, 100, 0, 0.3);
+        --back-to-top-hover-bg: #006400;
+        --back-to-top-text: #ffffff;
+        --primary-color-rgb: 0, 100, 0; /* For rgba usage */
+      }
+
+      /* Dark Mode Overrides */
+      html.dark {
+        --primary-color: #0f0;
+        --secondary-color: #0ff;
+        --bg-color: #000;
+        --text-color: #0f0;
+        --card-bg: #111;
+        --border-color: #0a0a0a;
+        --header-bg: rgba(0, 0, 0, 0.7); /* More translucent for dark mode */
+        --header-border: rgba(0, 255, 0, 0.2);
+        --scroll-gradient-start: #0f0;
+        --scroll-gradient-end: #0ff;
+        --button-hover-bg: #0f0;
+        --button-hover-text: #000;
+        --input-border: #008000;
+        --input-focus-ring: #00ffff;
+        --placeholder-color: #00cc00;
+        --back-to-top-bg: rgba(0, 255, 0, 0.3);
+        --back-to-top-hover-bg: #008000;
+        --back-to-top-text: #000;
+        --primary-color-rgb: 0, 255, 0; /* For rgba usage */
+      }
+
+      body {
+        font-family: var(--font-family);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        overflow-x: hidden;
+        transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transition */
+      }
+
+      .background-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        opacity: 0.05;
+      }
+
+      canvas {
+        display: block;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      h1, h2, h3 {
+        color: var(--primary-color); /* Apply primary color to headings */
+      }
+
+      .hover\:glow:hover {
+        box-shadow: 0 0 10px var(--primary-color);
+      }
+
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(to right, var(--scroll-gradient-start), var(--scroll-gradient-end));
+        width: 0%;
+        z-index: 50;
+        transition: width 0.2s ease-out;
+      }
+
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      /* Custom styles applying theme variables */
+      .header-bg {
+        background-color: var(--header-bg);
+        border-bottom-color: var(--header-border);
+      }
+
+      .hero-button {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+      .hero-button:hover {
+        background-color: var(--button-hover-bg);
+        color: var(--button-hover-text);
+      }
+
+      .post-content {
+        line-height: 1.8;
+      }
+      .post-content h2 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-size: 1.75rem; /* text-3xl */
+      }
+      .post-content p {
+        margin-bottom: 1rem;
+      }
+      .post-image {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        margin-bottom: 2rem;
+      }
+    </style>
+  </head>
+  <body class="relative">
+    <!-- Canvas Background -->
+    <canvas class="background-canvas" id="backgroundCanvas"></canvas>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scrollProgress" class="scroll-progress"></div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 header-bg backdrop-blur-md border-b shadow-lg">
+      <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="index.html" class="text-xl md:text-2xl font-bold text-primary">AJOYAG</a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex space-x-6 text-base items-center">
+          <a href="blog.html" class="hover:text-primary transition-colors p-2 rounded hover:bg-[rgba(var(--primary-color-rgb),0.2)]">Blog</a>
+          <a href="index.html" class="hover:text-primary transition-colors p-2 rounded hover:bg-[rgba(var(--primary-color-rgb),0.2)]">Know Me?</a>
+          <a href="all.html" class="hover:text-primary transition-colors p-2 rounded hover:bg-[rgba(var(--primary-color-rgb),0.2)]">All Posts</a>
+          <button id="darkModeToggle" data-toggle-dark class="p-2 rounded hover:bg-[rgba(var(--primary-color-rgb),0.2)] transition-colors">
+            <svg id="darkModeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </button>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuButton" class="md:hidden p-2">
+          <svg id="menuOpenIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="menuCloseIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="hidden md:hidden header-bg border-t">
+        <div class="container mx-auto px-4 py-3 space-y-3">
+          <a href="blog.html" class="block py-2 hover:text-primary transition-colors">Blog</a>
+          <a href="index.html" class="block py-2 hover:text-primary transition-colors">Know Me?</a>
+          <a href="all.html" class="block py-2 hover:text-primary transition-colors">All Posts</a>
+          <button id="darkModeMobileToggle" data-toggle-dark class="flex items-center w-full py-2 hover:text-primary transition-colors hover:bg-[rgba(var(--primary-color-rgb),0.2)] rounded">
+            <svg id="darkModeMobileIcon" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            Toggle Dark Mode
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Post Content Section -->
+    <section class="py-12 px-4">
+      <div class="container mx-auto max-w-3xl">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-primary">Ethical Hacking in 2025</h1>
+        <div class="text-sm text-text-color mb-8">
+          By <span class="text-primary">RedHatHacker</span> on 2025-03-15 • 7 min read
+        </div>
+
+        <img src="https://picsum.photos/seed/websec/800/450" alt="Ethical Hacking in 2025" class="post-image" />
+
+        <div class="post-content text-text-color">
+          <p>The landscape of cybersecurity is ever-evolving, and ethical hacking in 2025 is no exception. As technology advances, so do the methods employed by malicious actors. This article delves into the cutting-edge tools and methodologies that ethical hackers are leveraging to stay ahead of the curve and protect digital assets.</p>
+          <p>One of the most significant shifts is the increased integration of AI and machine learning into both offensive and defensive security operations. Ethical hackers are now using AI-powered tools for automated vulnerability scanning, predictive threat intelligence, and even for simulating complex attack scenarios to identify weaknesses before they can be exploited by real adversaries.</p>
+          <p>Furthermore, the rise of quantum computing poses both a challenge and an opportunity. While quantum computers could theoretically break many current encryption standards, ethical hackers are also exploring quantum-resistant cryptography and post-quantum security measures to prepare for this future. The focus is increasingly on proactive, adaptive security strategies rather than reactive defenses.</p>
+          <p>The human element remains a critical factor. Social engineering techniques continue to be a primary vector for attacks, necessitating continuous training and awareness programs. Ethical hackers are not just technical experts; they are also educators, helping organizations build a strong security culture from the ground up.</p>
+          <p>In conclusion, ethical hacking in 2025 is a dynamic field that demands continuous learning and adaptation. By embracing new technologies, understanding emerging threats, and focusing on comprehensive security strategies, ethical hackers play a vital role in safeguarding our increasingly digital world.</p>
+        </div>
+
+        <!-- Back to All Posts Button -->
+        <div class="mt-12 text-center">
+          <a href="all.html" class="hero-button font-mono px-6 py-3 rounded shadow-lg transform hover:scale-105 transition-all duration-300 border">
+            Back to All Posts
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 footer-bg border-t">
+      <div class="container mx-auto px-4 text-center">
+        <p class="text-sm">&copy; 2025 AJOYAG — All rights reserved</p>
+      </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-6 right-6 p-3 rounded-full shadow-lg back-to-top-button border hidden transition-colors">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
+
+    <!-- Dynamic Background Script (copied from all.html) -->
+    <script>
+      const canvas = document.getElementById('backgroundCanvas');
+      const ctx = canvas.getContext('2d');
+
+      let w, h;
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      const particles = [];
+      const totalParticles = 100;
+
+      for (let i = 0; i < totalParticles; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          radius: Math.random() * 2 + 1,
+          dx: (Math.random() - 0.5) * 1.5,
+          dy: (Math.random() - 0.5) * 1.5
+        });
+      }
+
+      function drawBackground() {
+        ctx.clearRect(0, 0, w, h);
+
+        const particleColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+        ctx.fillStyle = particleColor.replace('rgb', 'rgba').replace(')', ', 0.6)');
+
+        particles.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+          p.x += p.dx;
+          p.y += p.dy;
+
+          if (p.x < 0 || p.x > w) p.dx *= -1;
+          if (p.y < 0 || p.y > h) p.dy *= -1;
+        });
+
+        requestAnimationFrame(drawBackground);
+      }
+
+      drawBackground();
+    </script>
+
+    <!-- Main Script (for dark mode and back to top) -->
+    <script>
+      // Dark Mode Toggle
+      document.querySelectorAll("[data-toggle-dark]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const isDark = !document.documentElement.classList.contains("dark");
+          document.documentElement.classList.toggle("dark", isDark);
+          localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+        });
+      });
+
+      // Always start in dark mode
+      window.addEventListener("DOMContentLoaded", () => {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("darkMode", "enabled");
+      });
+
+      // Back to top button
+      const backToTop = document.getElementById("backToTop");
+      window.addEventListener("scroll", () => {
+        backToTop.classList.toggle("hidden", window.scrollY <= 300);
+      });
+
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    </script>
+  </body>
+</html>
