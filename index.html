@@ -1017,71 +1017,6 @@
       transform: translateY(-2px);
       text-decoration: underline;
     }
-
-    /* Custom Message Box Styles */
-    .message-box-overlay {
-      display: none; /* Hidden by default */
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7); /* Dark overlay */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000; /* Above all other content */
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .message-box-overlay.active {
-      opacity: 1;
-    }
-
-    .message-box {
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      padding: 2rem;
-      border-radius: 0.5rem;
-      text-align: center;
-      max-width: 400px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      position: relative;
-      transform: translateY(-20px); /* Start slightly above */
-      opacity: 0;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    .message-box-overlay.active .message-box {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .message-box h3 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: var(--accent-color);
-    }
-
-    .message-box p {
-      margin-bottom: 1.5rem;
-    }
-
-    .message-box button {
-      background: var(--accent-color);
-      color: var(--button-text);
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 0.375rem;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s ease;
-    }
-
-    .message-box button:hover {
-      background: var(--accent-hover);
-    }
   </style>
 </head>
 <body>
@@ -1249,8 +1184,8 @@
     <div class="container">
       <h2 class="section-title">Contact</h2>
       <div class="contact-row">
-        <!-- IMPORTANT: The action URL has been updated with your provided Google Apps Script URL -->
-        <form class="contact-form" id="contactForm" method="POST" action="https://script.google.com/macros/s/AKfycbzZSYLvVqbS_HWWEALG9-Hz-uheYv_OosrddFmeJIRgn1hG6GuuN9K-Zs0kxKLbSFG3/exec">
+        <!-- IMPORTANT: Replace "YOUR_WEB_APP_URL_HERE" with the URL you get from Google Apps Script deployment -->
+        <form class="contact-form" method="POST" action="YOUR_WEB_APP_URL_HERE">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" placeholder="Your Name" required />
 
@@ -1293,16 +1228,6 @@
     </div>
   </div>
   <!-- Project Modal End -->
-
-  <!-- Custom Message Box Start -->
-  <div class="message-box-overlay" id="messageBoxOverlay">
-    <div class="message-box">
-      <h3 id="messageBoxTitle"></h3>
-      <p id="messageBoxContent"></p>
-      <button onclick="hideMessageBox()">OK</button>
-    </div>
-  </div>
-  <!-- Custom Message Box End -->
 
   <!-- Scripts Start -->
   <script type="text/javascript">
@@ -1672,62 +1597,6 @@
       setTimeout(() => {
         document.querySelectorAll('.hover-only-on-hover').forEach(e => e.classList.remove('active-touch-hover'));
       }, 500); // Shorter timeout might be better
-    });
-
-    // Custom Message Box Functions
-    const messageBoxOverlay = document.getElementById('messageBoxOverlay');
-    const messageBoxTitle = document.getElementById('messageBoxTitle');
-    const messageBoxContent = document.getElementById('messageBoxContent');
-
-    function showMessageBox(title, content) {
-      messageBoxTitle.textContent = title;
-      messageBoxContent.textContent = content;
-      messageBoxOverlay.style.display = 'flex'; // Make it visible
-      setTimeout(() => {
-        messageBoxOverlay.classList.add('active'); // Trigger fade-in and slide-up
-      }, 10); // Small delay to allow display:flex to apply before transition
-    }
-
-    function hideMessageBox() {
-      messageBoxOverlay.classList.remove('active'); // Trigger fade-out and slide-down
-      setTimeout(() => {
-        messageBoxOverlay.style.display = 'none'; // Hide completely after transition
-      }, 300); // Match CSS transition duration
-    }
-
-    // Handle Contact Form Submission (AJAX)
-    const contactForm = document.getElementById('contactForm');
-    contactForm.addEventListener('submit', async function(event) {
-      event.preventDefault(); // Prevent default form submission (page reload)
-
-      const form = event.target;
-      const formData = new FormData(form);
-      const formAction = form.action; // Get the Google Apps Script URL from the form's action attribute
-
-      try {
-        const response = await fetch(formAction, {
-          method: 'POST',
-          body: formData
-        });
-
-        if (response.ok) {
-          // Read the response text from the Google Apps Script
-          const result = await response.text();
-          if (result === "Success") {
-            showMessageBox('Success!', 'Your message has been sent successfully.');
-            form.reset(); // Clear the form fields
-          } else {
-            showMessageBox('Error!', 'Something went wrong. Please try again later.');
-            console.error('Apps Script returned an unexpected response:', result);
-          }
-        } else {
-          showMessageBox('Error!', 'There was a problem sending your message. Please try again.');
-          console.error('Network response was not ok:', response.statusText);
-        }
-      } catch (error) {
-        showMessageBox('Error!', 'Could not connect to the server. Please check your internet connection.');
-        console.error('Fetch error:', error);
-      }
     });
   </script>
   <!-- Scripts End -->
