@@ -135,4 +135,4 @@ The JavaScript code orchestrates all the dynamic and interactive behaviors of th
 
 ### License
 
-View license.md to learn more.
+View the LICENCE file to learn more.
