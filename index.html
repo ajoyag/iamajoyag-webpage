@@ -8,7 +8,7 @@
   <!-- Favicon -->
   <link rel="icon" href="assets/images/logo.ico" type="image/x-icon">
 
-  <!-- Google Font -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&family=Space+Mono:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Icons (Font Awesome CDN) -->
@@ -22,7 +22,7 @@
       --bg-secondary: #ffffff;
       --text-primary: #333333;
       --text-secondary: #666666;
-      --accent-color: #007bff;
+      --accent-color: #007bff; /* Blue for light mode */
       --accent-hover: #0056b3;
       --border-color: #e0e0e0;
       --card-shadow: rgba(0,0,0,0.1);
@@ -50,7 +50,7 @@
       --bg-secondary: #111b2e;
       --text-primary: white;
       --text-secondary: #9ca3af;
-      --accent-color: #34d399;
+      --accent-color: #34d399; /* Green for dark mode */
       --accent-hover: #86efac;
       --border-color: #374151;
       --card-shadow: rgba(52,211,153,0.2);
@@ -182,13 +182,13 @@
       background-size: 20px 20px;
     }
 
-
+    /* Matrix Background Animation */
     @keyframes moveMatrix {
       0% { background-position: 0 0; }
       100% { background-position: 0 100vh; }
     }
 
-    /* New animation for glowing title */
+    /* Pulsating Glow Animation for Main Title */
     @keyframes pulsateGlow {
       0%, 100% { text-shadow: 0 0 5px var(--accent-color), 0 0 10px var(--accent-color), 0 0 15px var(--accent-color); }
       50% { text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color), 0 0 30px var(--accent-color); }
@@ -1170,7 +1170,7 @@
         </div>
       </div>
       <!-- New "View more blog posts!" link -->
-      <a href="blog.html" class="view-more-link">View more blog posts!</a>
+      <a href="#" class="view-more-link">View more blog posts!</a>
     </div>
   </section>
   <!-- Blog Section End -->
@@ -1184,15 +1184,16 @@
     <div class="container">
       <h2 class="section-title">Contact</h2>
       <div class="contact-row">
-        <form class="contact-form" onsubmit="event.preventDefault(); alert('Message sent!');">
+        <!-- IMPORTANT: Replace "YOUR_WEB_APP_URL_HERE" with the URL you get from Google Apps Script deployment -->
+        <form class="contact-form" method="POST" action="YOUR_WEB_APP_URL_HERE">
           <label for="name">Name</label>
-          <input type="text" id="name" placeholder="Your Name" required />
+          <input type="text" id="name" name="name" placeholder="Your Name" required />
 
           <label for="email">Email</label>
-          <input type="email" id="email" placeholder="your@email.com" required />
+          <input type="email" id="email" name="email" placeholder="your@email.com" required />
 
           <label for="message">Message</label>
-          <textarea id="message" rows="4" placeholder="Write something..."></textarea>
+          <textarea id="message" name="message" rows="4" placeholder="Write something..."></textarea>
 
           <button type="submit" class="btn-contact">Send Message</button>
         </form>
@@ -1584,10 +1585,7 @@
       });
     });
 
-    // Prevent ghost click effects
-    // This logic is for touch devices to manage hover states.
-    // It's a bit complex and might be simplified or removed depending on desired behavior.
-    // For now, keeping it but noting its purpose.
+    // Prevent ghost click effects (for touch devices to manage hover states)
     document.querySelectorAll('.hover-only-on-hover').forEach(el => {
       el.addEventListener('touchstart', () => {
         document.querySelectorAll('.hover-only-on-hover').forEach(e => e.classList.remove('active-touch-hover')); // Custom class to manage touch
